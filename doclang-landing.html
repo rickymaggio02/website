@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DocLang — The AI Document Format</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0f2044;
+    --navy-mid: #1a3460;
+    --orange: #e8560a;
+    --orange-light: #fdf0e8;
+    --orange-border: #f0c4a0;
+    --sand: #f7f5f1;
+    --border: #ddd9d2;
+    --text: #0f2044;
+    --muted: #6b7a96;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .nav-logomark {
+    width: 28px; height: 28px;
+    background: var(--navy); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  /* Pac-Man mark in nav */
+  .nav-logomark svg { width: 20px; height: 20px; }
+  .nav-logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px; color: var(--navy); letter-spacing: -0.02em;
+  }
+  .nav-links {
+    display: flex; gap: 2rem; align-items: center; list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; color: var(--muted); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta {
+    background: var(--orange); color: white;
+    font-size: 13px; font-weight: 500;
+    padding: 8px 18px; border-radius: 6px;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .nav-cta:hover { background: #c9480a; }
+
+  /* ── SHARED ── */
+  .section-inner { max-width: 1080px; margin: 0 auto; padding: 5rem 3rem; }
+  .eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--orange);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px; font-weight: 400; letter-spacing: -0.02em;
+    line-height: 1.15; color: var(--navy);
+    margin-bottom: 1.5rem;
+  }
+  .body-text {
+    font-size: 15px; color: var(--muted); line-height: 1.75;
+    max-width: 600px;
+  }
+  .body-text + .body-text { margin-top: 1rem; }
+  section { border-bottom: 1px solid var(--border); }
+
+  /* ── HERO ── */
+  .hero { border-bottom: 1px solid var(--border); }
+  .hero-inner {
+    max-width: 1080px; margin: 0 auto;
+    padding: 6rem 3rem 5rem;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--orange-light);
+    border: 1px solid var(--orange-border);
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 12px; font-weight: 500; color: var(--orange);
+    margin-bottom: 2rem;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--orange); flex-shrink: 0;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 60px; font-weight: 400;
+    line-height: 1.05; letter-spacing: -0.03em;
+    color: var(--navy); max-width: 700px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--orange); }
+  .hero-sub {
+    font-size: 17px; color: var(--muted);
+    max-width: 520px; line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 12px; margin-bottom: 3.5rem; }
+  .btn-primary {
+    background: var(--navy); color: white;
+    font-size: 14px; font-weight: 500;
+    padding: 13px 26px; border-radius: 8px;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-secondary {
+    border: 1px solid var(--border); color: var(--navy);
+    font-size: 14px; padding: 13px 26px; border-radius: 8px;
+    text-decoration: none; transition: background 0.15s;
+    background: var(--white);
+  }
+  .btn-secondary:hover { background: var(--sand); }
+  .btn-orange {
+    background: var(--orange); color: white;
+    font-size: 15px; font-weight: 500;
+    padding: 14px 32px; border-radius: 8px;
+    text-decoration: none; transition: background 0.15s;
+    display: inline-block;
+  }
+  .btn-orange:hover { background: #c9480a; }
+  .btn-ghost {
+    color: var(--muted); font-size: 14px;
+    text-decoration: none; padding: 14px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .btn-ghost:hover { color: var(--navy); border-color: var(--navy); }
+
+  .founders {
+    display: flex; align-items: center; gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .founders-label { font-size: 12px; color: var(--muted); }
+  .lf-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #e8eef7; border: 1px solid #c5d2e8;
+    border-radius: 6px; padding: 5px 12px;
+    font-size: 12px; font-weight: 500; color: var(--navy);
+  }
+  .lf-icon {
+    width: 14px; height: 14px; background: var(--navy);
+    border-radius: 3px; flex-shrink: 0;
+  }
+  .founder-tag {
+    display: inline-block; font-size: 12px; color: var(--muted);
+    background: var(--sand); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 12px;
+  }
+
+  /* ── THE PROBLEM ── */
+  .problem { background: var(--navy); }
+  .problem .eyebrow { color: rgba(232,86,10,0.9); }
+  .problem .section-title { color: white; }
+  .problem .body-text { color: rgba(255,255,255,0.55); max-width: 580px; }
+
+  /* ── WHAT IS DOCLANG ── */
+  .what-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: start;
+  }
+  .what-bullets { margin-top: 2rem; }
+  .what-bullets li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: var(--muted); line-height: 1.6;
+    padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+    list-style: none;
+  }
+  .what-bullets li:last-child { border-bottom: none; }
+  .bullet-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--orange); flex-shrink: 0; margin-top: 6px;
+  }
+  .what-right {
+    background: var(--sand); border-radius: 12px;
+    padding: 2rem; border: 1px solid var(--border);
+  }
+  .what-right h3 {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 1.25rem;
+  }
+
+  /* ── WHY DOCLANG ── */
+  .why { background: var(--sand); }
+  .why-rows { margin-top: 1rem; }
+  .why-row {
+    display: flex; gap: 2.5rem;
+    padding: 2rem 0; border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .why-row:first-child { padding-top: 0; }
+  .why-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .why-num {
+    font-size: 12px; color: var(--muted);
+    min-width: 30px; padding-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .why-content h3 {
+    font-size: 16px; font-weight: 500; color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .why-content p {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    max-width: 560px;
+  }
+  .why-content p + p { margin-top: 10px; }
+  .business-note {
+    font-size: 13px; color: var(--muted); line-height: 1.65;
+    padding: 0.85rem 1rem; margin-top: 0.85rem;
+    background: white; border-radius: 8px;
+    border-left: 3px solid var(--orange);
+  }
+  .business-note strong { color: var(--navy); font-weight: 500; }
+
+  /* ── HOW IT WORKS ── */
+  .how-inner {
+    max-width: 1080px; margin: 0 auto; padding: 5rem 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .how-left .eyebrow { margin-bottom: 0.75rem; }
+  .how-left h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; color: var(--navy); letter-spacing: -0.02em;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .how-left p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .how-right {
+    background: var(--navy); border-radius: 12px;
+    padding: 2rem;
+  }
+  .how-right h3 {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+    margin-bottom: 1rem;
+  }
+  .spec-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--orange); text-decoration: none;
+    font-weight: 500; margin-top: 1.25rem;
+    border-bottom: 1px solid rgba(232,86,10,0.3);
+    padding-bottom: 2px; transition: border-color 0.15s;
+  }
+  .spec-link:hover { border-color: var(--orange); }
+
+  /* ── CONTRIBUTE — placeholder ── */
+  .contribute { background: #e8eef7; }
+  .contribute .section-title { color: var(--navy); }
+  .contribute-placeholder {
+    background: white; border: 1px dashed #c5d2e8;
+    border-radius: 12px; padding: 2rem;
+    text-align: center; color: var(--muted); font-size: 14px;
+    margin-top: 1.5rem; line-height: 1.7;
+  }
+
+  /* ── FAQ ── */
+  .faq-list { margin-top: 2rem; max-width: 660px; }
+  .faq-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .faq-item h3 {
+    font-size: 15px; font-weight: 500; color: var(--navy);
+    margin-bottom: 8px; line-height: 1.4;
+  }
+  .faq-item p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .faq-item p + p { margin-top: 8px; }
+  .faq-item em { color: var(--navy); font-style: normal; font-weight: 500; }
+
+  /* ── CTA ── */
+  .cta { background: var(--orange-light); border-bottom: none; }
+  .cta-inner {
+    max-width: 1080px; margin: 0 auto;
+    padding: 6rem 3rem; text-align: center;
+  }
+  .cta-inner .eyebrow { margin-bottom: 1rem; }
+  .cta-inner h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px; font-weight: 400; letter-spacing: -0.02em;
+    color: var(--navy); line-height: 1.1; margin-bottom: 1.25rem;
+  }
+  .cta-inner p {
+    font-size: 15px; color: var(--muted); max-width: 420px;
+    margin: 0 auto 2.5rem; line-height: 1.75;
+  }
+  .cta-actions {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); padding: 1.75rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-links {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .footer-links a {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    text-decoration: none; transition: color 0.15s;
+  }
+  .footer-links a:hover { color: rgba(255,255,255,0.8); }
+  .footer-copy {
+    font-size: 12px; color: rgba(255,255,255,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logomark">
+      <!-- Pac-Man mark -->
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 6 L1 12 L4 18" stroke="#e8560a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M20 6 L23 12 L20 18" stroke="#e8560a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 12 L18.5 8.9 A7 7 0 1 0 18.5 15.1 Z" fill="#f5c518"/>
+        <circle cx="10.5" cy="8.5" r="1.2" fill="#0f2044"/>
+      </svg>
+    </div>
+    <span class="nav-logo-text">DocLang</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#what">Standard</a></li>
+    <li><a href="#how">Docs</a></li>
+    <li><a href="https://github.com/doclang">GitHub</a></li>
+    <li><a href="#why">Why DocLang</a></li>
+    <li><a href="#cta" class="nav-cta">Get started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Open standard · Linux Foundation
+    </div>
+    <h1>The AI document<br><em>format.</em></h1>
+    <p class="hero-sub">PDF, DOCX, HTML — every format your pipeline ingests is a gamble. Structure gets lost. Tables break. Reading order is guessed. DocLang is the open standard that gives documents the consistent, machine-readable representation they've always needed. Built for AI. Governed by the Linux Foundation.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Read the spec</a>
+      <a href="https://github.com/doclang" class="btn-secondary">View on GitHub →</a>
+    </div>
+    <div class="founders">
+      <span class="founders-label">A</span>
+      <div class="lf-badge"><div class="lf-icon"></div>Linux Foundation project</div>
+      <span class="founders-label">founded by</span>
+      <span class="founder-tag">ABBYY</span>
+      <span class="founder-tag">IBM</span>
+      <span class="founder-tag">NVIDIA</span>
+      <span class="founder-tag">Red Hat</span>
+    </div>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section class="problem">
+  <div class="section-inner">
+    <p class="eyebrow">The problem</p>
+    <h2 class="section-title">Your documents are lying<br>to your models.</h2>
+    <p class="body-text">Modern AI pipelines assume clean, structured input. Real-world documents — contracts, invoices, research papers, regulatory filings — are none of those things. Parsers guess at reading order. Tables become flat text. Figures vanish. Metadata is stripped.</p>
+    <p class="body-text" style="margin-top:1rem;">The result: your model's accuracy is bottlenecked by document quality, not model quality. You spend more engineering time wrangling pre-processing than building the product.</p>
+  </div>
+</section>
+
+<!-- WHAT IS DOCLANG -->
+<section id="what">
+  <div class="section-inner">
+    <p class="eyebrow">What is DocLang</p>
+    <div class="what-grid">
+      <div class="what-left">
+        <h2 class="section-title">A document representation built for how AI actually reads.</h2>
+        <p class="body-text">DocLang defines a structured, machine-readable format for documents of any type. Not a converter. Not an API. A standard — like JSON for data, like HTML for the web — that any tool can implement and any pipeline can consume.</p>
+        <p class="body-text" style="margin-top:1rem;">Every component in a DocLang asset has explicit type, semantic role, and geometric position. A table is a table. A heading is a heading. A footer is a footer. Your model doesn't have to guess. And compliance metadata — PII flags, AI usage permissions, extraction constraints — travels with the document, not alongside it. The asset knows its own rules.</p>
+      </div>
+      <div class="what-right">
+        <h3>What DocLang does</h3>
+        <ul class="what-bullets">
+          <li><span class="bullet-dot"></span>Preserves reading order and document hierarchy</li>
+          <li><span class="bullet-dot"></span>Preserves table structure — rows, columns, merged cells</li>
+          <li><span class="bullet-dot"></span>Maps figure and caption relationships</li>
+          <li><span class="bullet-dot"></span>Embeds inline metadata and governance annotations</li>
+          <li><span class="bullet-dot"></span>Handles multi-column layouts and complex page geometry</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY DOCLANG -->
+<section id="why" class="why">
+  <div class="section-inner">
+    <p class="eyebrow">Why DocLang</p>
+    <h2 class="section-title">Three things that don't exist anywhere else.</h2>
+    <div class="why-rows">
+
+      <div class="why-row">
+        <span class="why-num">01</span>
+        <div class="why-content">
+          <h3>Structure you can trust</h3>
+          <p>DocLang maps every component to its semantic role and geometric position. There's no ambiguity about what a piece of content is or where it sits in the document. Your models stop hallucinating structure because the structure is already there.</p>
+          <div class="business-note"><strong>For business teams:</strong> fewer errors in automated document workflows mean fewer manual reviews, lower compliance exposure, and faster time-to-decision.</div>
+        </div>
+      </div>
+
+      <div class="why-row">
+        <span class="why-num">02</span>
+        <div class="why-content">
+          <h3>Governance built into the file</h3>
+          <p>Compliance metadata — PII flags, AI usage permissions, extraction constraints — travels with the document, not alongside it. No external policy engine to maintain. No risk of metadata getting stripped in transit.</p>
+          <div class="business-note"><strong>For business teams:</strong> audit-ready by default. Your legal and compliance teams can define rules once, and every downstream system reads them automatically.</div>
+        </div>
+      </div>
+
+      <div class="why-row">
+        <span class="why-num">03</span>
+        <div class="why-content">
+          <h3>An open standard anyone can build on</h3>
+          <p>DocLang is governed by the Linux Foundation. The spec is public, the working group is open, and any vendor can implement it. For the first time, the industry has a shared language for documents — one that belongs to no single company and that every tool, pipeline, and model can speak.</p>
+          <div class="business-note"><strong>For business teams:</strong> no lock-in, ever. Swap components as the market evolves. Your documents stay portable because the standard is stable.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-inner">
+    <div class="how-left">
+      <p class="eyebrow">How it works</p>
+      <h2>AI native document format specification</h2>
+      <p>DocLang is an AI-native document format. Each asset represents a structured document where every component — headings, tables, figures, paragraphs — carries explicit semantic role, reading order, geometric position, and embedded governance metadata.</p>
+      <a href="https://github.com/doclang" class="spec-link">
+        Full spec and reference implementation on GitHub →
+      </a>
+    </div>
+    <div class="how-right">
+      <h3>Each DocLang asset encodes</h3>
+      <ul class="what-bullets" style="margin-top:0;">
+        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Component type — heading, table, figure, paragraph</span></li>
+        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Semantic role and document hierarchy</span></li>
+        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Geometric position and reading order</span></li>
+        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Embedded governance metadata</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRIBUTE -->
+<section class="contribute">
+  <div class="section-inner" style="padding-top:4rem; padding-bottom:4rem;">
+    <p class="eyebrow">How do you contribute?</p>
+    <h2 class="section-title" style="color:var(--navy);">Join the working group.</h2>
+    <div class="contribute-placeholder">
+      <p style="font-weight:500; color:var(--navy); margin-bottom:6px;">Linux Foundation content — insert here</p>
+      <p>Working group information, participation details, and contribution guidelines to be provided by the Linux Foundation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <p class="eyebrow">FAQ</p>
+    <h2 class="section-title">Honest answers to<br>obvious questions.</h2>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <h3>Is this just another document parser?</h3>
+        <p>No. Parsers convert documents into some proprietary output format. DocLang is a standard — a shared specification that any parser, any converter, any AI tool can implement. The goal is interoperability, not another tool to integrate.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What's wrong with just using Docling / FineReader / MyParser instead of DocLang?</h3>
+        <p>Nothing — that's the point. Enable the DocLang output and the structured data they produce stops being tied to your specific pipeline configuration. It becomes consumable by any downstream system that speaks the DocLang standard — your embedder, your LLM, your RAG pipeline, your compliance layer.</p>
+        <p><em>Docling and ABBYY FineReader Engine</em> already natively support the DocLang standard.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How is this different from what PDF already contains?</h3>
+        <p>PDF is a presentation format. It tells a renderer where to draw pixels. DocLang is a semantic format — it tells a model what content <em>is</em>. A PDF table and a DocLang table are fundamentally different objects.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Who governs the spec?</h3>
+        <p>The Linux Foundation. The DocLang working group — currently IBM, NVIDIA, Red Hat, and ABBYY — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can I contribute?</h3>
+        <p>Yes. The spec, the reference implementation, and the working group processes are all public. Join the GitHub discussion, open an issue, or attend a working group session. The standard improves when more perspectives are in the room.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta" id="cta">
+  <div class="cta-inner">
+    <p class="eyebrow">Ready to standardize your pipeline?</p>
+    <h2>Your pipeline deserves<br>better input.</h2>
+    <p>DocLang is free, open, and ready to use. Read the spec, run the reference converter on your own documents, and see what your models have been missing.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-orange">Read the spec</a>
+      <a href="https://github.com/doclang" class="btn-secondary">View on GitHub →</a>
+      <a href="#" class="btn-ghost">Join the working group</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#">DocLang</a>
+    <a href="#">Spec</a>
+    <a href="#">Docs</a>
+    <a href="https://github.com/doclang">GitHub</a>
+    <a href="#">Working group</a>
+    <a href="#">Linux Foundation</a>
+  </div>
+  <span class="footer-copy">© DocLang Working Group, a Linux Foundation project · Open standard · Apache 2.0</span>
+</footer>
+
+</body>
+</html>
