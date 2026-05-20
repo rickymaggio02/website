@@ -11,15 +11,18 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #0f2044;
-    --navy-mid: #1a3460;
-    --orange: #e8560a;
-    --orange-light: #fdf0e8;
-    --orange-border: #f0c4a0;
-    --sand: #f7f5f1;
-    --border: #ddd9d2;
-    --text: #0f2044;
-    --muted: #6b7a96;
+    --charcoal: #46474b;
+    --charcoal-mid: #5a5b60;
+    --ink: #24262b;
+    --cyan: #10aeea;
+    --cyan-deep: #004fb0;
+    --cyan-light: #e8f8ff;
+    --cyan-wash: #f3fbff;
+    --cyan-border: #a9def5;
+    --ice: #f7fbfd;
+    --border: #dbe7ee;
+    --text: #303238;
+    --muted: #687783;
     --white: #ffffff;
   }
 
@@ -35,27 +38,19 @@
   /* ── NAV ── */
   nav {
     position: sticky; top: 0; z-index: 100;
-    background: var(--white);
+    background: rgba(255,255,255,0.94);
     border-bottom: 1px solid var(--border);
     padding: 0 3rem;
     display: flex; align-items: center; justify-content: space-between;
-    height: 60px;
+    height: 68px;
+    backdrop-filter: blur(12px);
   }
   .nav-logo {
     display: flex; align-items: center; gap: 10px; text-decoration: none;
   }
   .nav-logomark {
-    width: 28px; height: 28px;
-    background: var(--navy); border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
+    width: auto; height: 50px;
     flex-shrink: 0;
-    position: relative;
-  }
-  /* Pac-Man mark in nav */
-  .nav-logomark svg { width: 20px; height: 20px; }
-  .nav-logo-text {
-    font-family: 'DM Serif Display', serif;
-    font-size: 17px; color: var(--navy); letter-spacing: -0.02em;
   }
   .nav-links {
     display: flex; gap: 2rem; align-items: center; list-style: none;
@@ -64,26 +59,28 @@
     font-size: 14px; color: var(--muted); text-decoration: none;
     transition: color 0.15s;
   }
-  .nav-links a:hover { color: var(--navy); }
+  .nav-links a:hover { color: var(--cyan-deep); }
   .nav-cta {
-    background: var(--orange); color: white;
+    background: var(--cyan-deep); color: white;
     font-size: 13px; font-weight: 500;
     padding: 8px 18px; border-radius: 6px;
     text-decoration: none; transition: background 0.15s;
   }
-  .nav-cta:hover { background: #c9480a; }
+  .nav-links a.nav-cta { color: white; }
+  .nav-cta:hover { background: #003d88; }
+  .nav-links a.nav-cta:hover { color: white; }
 
   /* ── SHARED ── */
   .section-inner { max-width: 1080px; margin: 0 auto; padding: 5rem 3rem; }
   .eyebrow {
     font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--orange);
+    text-transform: uppercase; color: var(--cyan-deep);
     margin-bottom: 0.6rem;
   }
   .section-title {
     font-family: 'DM Serif Display', serif;
     font-size: 34px; font-weight: 400; letter-spacing: -0.02em;
-    line-height: 1.15; color: var(--navy);
+    line-height: 1.15; color: var(--charcoal);
     margin-bottom: 1.5rem;
   }
   .body-text {
@@ -94,31 +91,51 @@
   section { border-bottom: 1px solid var(--border); }
 
   /* ── HERO ── */
-  .hero { border-bottom: 1px solid var(--border); }
+  .hero {
+    border-bottom: 1px solid var(--border);
+    background:
+      radial-gradient(circle at 78% 18%, rgba(16,174,234,0.14), transparent 28rem),
+      linear-gradient(180deg, var(--white) 0%, var(--cyan-wash) 100%);
+  }
   .hero-inner {
     max-width: 1080px; margin: 0 auto;
-    padding: 6rem 3rem 5rem;
+    padding: 4.5rem 3rem 5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+    gap: 4rem;
+    align-items: center;
+  }
+  .hero-copy { min-width: 0; }
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-brand-logo {
+    display: block;
+    width: min(460px, 100%);
+    height: auto;
   }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--orange-light);
-    border: 1px solid var(--orange-border);
+    background: var(--cyan-light);
+    border: 1px solid var(--cyan-border);
     border-radius: 20px; padding: 5px 14px;
-    font-size: 12px; font-weight: 500; color: var(--orange);
+    font-size: 12px; font-weight: 500; color: var(--cyan-deep);
     margin-bottom: 2rem;
   }
   .hero-badge-dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--orange); flex-shrink: 0;
+    background: var(--cyan); flex-shrink: 0;
   }
   .hero h1 {
     font-family: 'DM Serif Display', serif;
     font-size: 60px; font-weight: 400;
     line-height: 1.05; letter-spacing: -0.03em;
-    color: var(--navy); max-width: 700px;
+    color: var(--charcoal); max-width: 700px;
     margin-bottom: 1.5rem;
   }
-  .hero h1 em { font-style: italic; color: var(--orange); }
+  .hero h1 em { font-style: italic; color: var(--cyan-deep); }
   .hero-sub {
     font-size: 17px; color: var(--muted);
     max-width: 520px; line-height: 1.75;
@@ -126,34 +143,34 @@
   }
   .hero-actions { display: flex; gap: 12px; margin-bottom: 3.5rem; }
   .btn-primary {
-    background: var(--navy); color: white;
+    background: var(--cyan-deep); color: white;
     font-size: 14px; font-weight: 500;
     padding: 13px 26px; border-radius: 8px;
     text-decoration: none; transition: background 0.15s;
   }
-  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-primary:hover { background: #003d88; }
   .btn-secondary {
-    border: 1px solid var(--border); color: var(--navy);
+    border: 1px solid var(--border); color: var(--charcoal);
     font-size: 14px; padding: 13px 26px; border-radius: 8px;
     text-decoration: none; transition: background 0.15s;
     background: var(--white);
   }
-  .btn-secondary:hover { background: var(--sand); }
+  .btn-secondary:hover { background: var(--ice); }
   .btn-orange {
-    background: var(--orange); color: white;
+    background: var(--cyan); color: white;
     font-size: 15px; font-weight: 500;
     padding: 14px 32px; border-radius: 8px;
     text-decoration: none; transition: background 0.15s;
     display: inline-block;
   }
-  .btn-orange:hover { background: #c9480a; }
+  .btn-orange:hover { background: var(--cyan-deep); }
   .btn-ghost {
     color: var(--muted); font-size: 14px;
     text-decoration: none; padding: 14px 0;
     border-bottom: 1px solid transparent;
     transition: color 0.15s, border-color 0.15s;
   }
-  .btn-ghost:hover { color: var(--navy); border-color: var(--navy); }
+  .btn-ghost:hover { color: var(--cyan-deep); border-color: var(--cyan-deep); }
 
   .founders {
     display: flex; align-items: center; gap: 1rem;
@@ -164,23 +181,23 @@
   .founders-label { font-size: 12px; color: var(--muted); }
   .lf-badge {
     display: inline-flex; align-items: center; gap: 7px;
-    background: #e8eef7; border: 1px solid #c5d2e8;
+    background: var(--cyan-light); border: 1px solid var(--cyan-border);
     border-radius: 6px; padding: 5px 12px;
-    font-size: 12px; font-weight: 500; color: var(--navy);
+    font-size: 12px; font-weight: 500; color: var(--cyan-deep);
   }
   .lf-icon {
-    width: 14px; height: 14px; background: var(--navy);
+    width: 14px; height: 14px; background: var(--cyan-deep);
     border-radius: 3px; flex-shrink: 0;
   }
   .founder-tag {
     display: inline-block; font-size: 12px; color: var(--muted);
-    background: var(--sand); border: 1px solid var(--border);
+    background: var(--ice); border: 1px solid var(--border);
     border-radius: 20px; padding: 4px 12px;
   }
 
   /* ── THE PROBLEM ── */
-  .problem { background: var(--navy); }
-  .problem .eyebrow { color: rgba(232,86,10,0.9); }
+  .problem { background: var(--charcoal); }
+  .problem .eyebrow { color: rgba(16,174,234,0.95); }
   .problem .section-title { color: white; }
   .problem .body-text { color: rgba(255,255,255,0.55); max-width: 580px; }
 
@@ -199,19 +216,19 @@
   .what-bullets li:last-child { border-bottom: none; }
   .bullet-dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--orange); flex-shrink: 0; margin-top: 6px;
+    background: var(--cyan); flex-shrink: 0; margin-top: 6px;
   }
   .what-right {
-    background: var(--sand); border-radius: 12px;
+    background: var(--ice); border-radius: 12px;
     padding: 2rem; border: 1px solid var(--border);
   }
   .what-right h3 {
     font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--orange); margin-bottom: 1.25rem;
+    text-transform: uppercase; color: var(--cyan-deep); margin-bottom: 1.25rem;
   }
 
   /* ── WHY DOCLANG ── */
-  .why { background: var(--sand); }
+  .why { background: var(--ice); }
   .why-rows { margin-top: 1rem; }
   .why-row {
     display: flex; gap: 2.5rem;
@@ -226,7 +243,7 @@
     font-variant-numeric: tabular-nums;
   }
   .why-content h3 {
-    font-size: 16px; font-weight: 500; color: var(--navy);
+    font-size: 16px; font-weight: 500; color: var(--charcoal);
     margin-bottom: 8px;
   }
   .why-content p {
@@ -238,9 +255,9 @@
     font-size: 13px; color: var(--muted); line-height: 1.65;
     padding: 0.85rem 1rem; margin-top: 0.85rem;
     background: white; border-radius: 8px;
-    border-left: 3px solid var(--orange);
+    border-left: 3px solid var(--cyan);
   }
-  .business-note strong { color: var(--navy); font-weight: 500; }
+  .business-note strong { color: var(--charcoal); font-weight: 500; }
 
   /* ── HOW IT WORKS ── */
   .how-inner {
@@ -250,12 +267,12 @@
   .how-left .eyebrow { margin-bottom: 0.75rem; }
   .how-left h2 {
     font-family: 'DM Serif Display', serif;
-    font-size: 28px; color: var(--navy); letter-spacing: -0.02em;
+    font-size: 28px; color: var(--charcoal); letter-spacing: -0.02em;
     line-height: 1.2; margin-bottom: 1rem;
   }
   .how-left p { font-size: 14px; color: var(--muted); line-height: 1.7; }
   .how-right {
-    background: var(--navy); border-radius: 12px;
+    background: var(--charcoal); border-radius: 12px;
     padding: 2rem;
   }
   .how-right h3 {
@@ -265,18 +282,18 @@
   }
   .spec-link {
     display: inline-flex; align-items: center; gap: 8px;
-    font-size: 14px; color: var(--orange); text-decoration: none;
+    font-size: 14px; color: var(--cyan); text-decoration: none;
     font-weight: 500; margin-top: 1.25rem;
-    border-bottom: 1px solid rgba(232,86,10,0.3);
+    border-bottom: 1px solid rgba(16,174,234,0.35);
     padding-bottom: 2px; transition: border-color 0.15s;
   }
-  .spec-link:hover { border-color: var(--orange); }
+  .spec-link:hover { border-color: var(--cyan); }
 
   /* ── CONTRIBUTE — placeholder ── */
-  .contribute { background: #e8eef7; }
-  .contribute .section-title { color: var(--navy); }
+  .contribute { background: var(--cyan-light); }
+  .contribute .section-title { color: var(--charcoal); }
   .contribute-placeholder {
-    background: white; border: 1px dashed #c5d2e8;
+    background: white; border: 1px dashed var(--cyan-border);
     border-radius: 12px; padding: 2rem;
     text-align: center; color: var(--muted); font-size: 14px;
     margin-top: 1.5rem; line-height: 1.7;
@@ -287,15 +304,15 @@
   .faq-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
   .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
   .faq-item h3 {
-    font-size: 15px; font-weight: 500; color: var(--navy);
+    font-size: 15px; font-weight: 500; color: var(--charcoal);
     margin-bottom: 8px; line-height: 1.4;
   }
   .faq-item p { font-size: 14px; color: var(--muted); line-height: 1.7; }
   .faq-item p + p { margin-top: 8px; }
-  .faq-item em { color: var(--navy); font-style: normal; font-weight: 500; }
+  .faq-item em { color: var(--charcoal); font-style: normal; font-weight: 500; }
 
   /* ── CTA ── */
-  .cta { background: var(--orange-light); border-bottom: none; }
+  .cta { background: var(--cyan-light); border-bottom: none; }
   .cta-inner {
     max-width: 1080px; margin: 0 auto;
     padding: 6rem 3rem; text-align: center;
@@ -304,7 +321,7 @@
   .cta-inner h2 {
     font-family: 'DM Serif Display', serif;
     font-size: 44px; font-weight: 400; letter-spacing: -0.02em;
-    color: var(--navy); line-height: 1.1; margin-bottom: 1.25rem;
+    color: var(--charcoal); line-height: 1.1; margin-bottom: 1.25rem;
   }
   .cta-inner p {
     font-size: 15px; color: var(--muted); max-width: 420px;
@@ -317,7 +334,7 @@
 
   /* ── FOOTER ── */
   footer {
-    background: var(--navy); padding: 1.75rem 3rem;
+    background: var(--charcoal); padding: 1.75rem 3rem;
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 1rem;
   }
@@ -332,6 +349,22 @@
   .footer-copy {
     font-size: 12px; color: rgba(255,255,255,0.3);
   }
+
+  @media (max-width: 760px) {
+    nav { padding: 0 1.25rem; height: auto; min-height: 68px; gap: 1rem; }
+    .nav-logomark { height: 46px; }
+    .nav-links { gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
+    .nav-links a { font-size: 13px; }
+    .nav-links li:not(:last-child) { display: none; }
+    .hero-inner, .section-inner, .how-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { order: -1; justify-content: flex-start; }
+    .hero h1 { font-size: 44px; }
+    .hero-brand-logo { width: min(340px, 100%); }
+    .hero-actions, .cta-actions { align-items: stretch; flex-direction: column; }
+    .what-grid, .how-inner { grid-template-columns: 1fr; gap: 2rem; }
+    footer { padding: 1.5rem; }
+  }
 </style>
 </head>
 <body>
@@ -339,16 +372,7 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="nav-logomark">
-      <!-- Pac-Man mark -->
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 6 L1 12 L4 18" stroke="#e8560a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M20 6 L23 12 L20 18" stroke="#e8560a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 12 L18.5 8.9 A7 7 0 1 0 18.5 15.1 Z" fill="#f5c518"/>
-        <circle cx="10.5" cy="8.5" r="1.2" fill="#0f2044"/>
-      </svg>
-    </div>
-    <span class="nav-logo-text">DocLang</span>
+    <img class="nav-logomark" src="logos/doclang-logo.png" alt="DocLang">
   </a>
   <ul class="nav-links">
     <li><a href="#what">Standard</a></li>
@@ -362,24 +386,29 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      Open standard · Linux Foundation
+    <div class="hero-copy">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        Open standard · Linux Foundation
+      </div>
+      <h1>The AI Native document<br><em>format.</em></h1>
+      <p class="hero-sub">PDF, DOCX, HTML — every format your pipeline ingests is a gamble. Structure gets lost. Tables break. Reading order is guessed. DocLang is the open standard that gives documents the consistent, machine-readable representation they've always needed. Built for AI. Governed by the Linux Foundation.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Read the spec</a>
+        <a href="https://github.com/doclang" class="btn-secondary">View on GitHub →</a>
+      </div>
+      <div class="founders">
+        <span class="founders-label">A</span>
+        <div class="lf-badge"><div class="lf-icon"></div>Linux Foundation project</div>
+        <span class="founders-label">founded by</span>
+        <span class="founder-tag">ABBYY</span>
+        <span class="founder-tag">IBM</span>
+        <span class="founder-tag">NVIDIA</span>
+        <span class="founder-tag">Red Hat</span>
+      </div>
     </div>
-    <h1>The AI document<br><em>format.</em></h1>
-    <p class="hero-sub">PDF, DOCX, HTML — every format your pipeline ingests is a gamble. Structure gets lost. Tables break. Reading order is guessed. DocLang is the open standard that gives documents the consistent, machine-readable representation they've always needed. Built for AI. Governed by the Linux Foundation.</p>
-    <div class="hero-actions">
-      <a href="#" class="btn-primary">Read the spec</a>
-      <a href="https://github.com/doclang" class="btn-secondary">View on GitHub →</a>
-    </div>
-    <div class="founders">
-      <span class="founders-label">A</span>
-      <div class="lf-badge"><div class="lf-icon"></div>Linux Foundation project</div>
-      <span class="founders-label">founded by</span>
-      <span class="founder-tag">ABBYY</span>
-      <span class="founder-tag">IBM</span>
-      <span class="founder-tag">NVIDIA</span>
-      <span class="founder-tag">Red Hat</span>
+    <div class="hero-visual">
+      <img class="hero-brand-logo" src="logos/doclang-logo.png" alt="DocLang logo">
     </div>
   </div>
 </div>
@@ -483,9 +512,9 @@
 <section class="contribute">
   <div class="section-inner" style="padding-top:4rem; padding-bottom:4rem;">
     <p class="eyebrow">How do you contribute?</p>
-    <h2 class="section-title" style="color:var(--navy);">Join the working group.</h2>
+    <h2 class="section-title" style="color:var(--charcoal);">Join the working group.</h2>
     <div class="contribute-placeholder">
-      <p style="font-weight:500; color:var(--navy); margin-bottom:6px;">Linux Foundation content — insert here</p>
+      <p style="font-weight:500; color:var(--charcoal); margin-bottom:6px;">Linux Foundation content — insert here</p>
       <p>Working group information, participation details, and contribution guidelines to be provided by the Linux Foundation.</p>
     </div>
   </div>
