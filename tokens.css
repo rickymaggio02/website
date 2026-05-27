@@ -1,0 +1,89 @@
+/* Hallmark · tokens · DocLang · genre: modern-minimal · theme: custom (Deep Indigo + Electric Cyan)
+ * Source: DocLang_MiniBrandGuide.pdf — all colour values derived from brand guide hex → OKLCH
+ */
+
+:root {
+  /* ── COLOUR — Brand palette in OKLCH ─────────────────────────────────── */
+
+  /* Paper surfaces */
+  --color-paper:           oklch(99% 0.005 215);   /* near-white, imperceptible cyan tint */
+  --color-paper-2:         oklch(97% 0.030 210);   /* Cyan 200 wash  #DDF7FF */
+  --color-paper-warm:      oklch(96% 0.010 55);    /* Warm White     #F8F2EF */
+  --color-paper-dark:      oklch(22% 0.230 270);   /* Deep Indigo    #1B0B82 */
+  --color-paper-dark-2:    oklch(16% 0.180 272);   /* Indigo 900     #12065C */
+  --color-paper-nav:       oklch(99% 0.005 215 / 0.92); /* nav glass */
+
+  /* Ink / text */
+  --color-ink:             oklch(20% 0.080 272);   /* deep indigo-near-black */
+  --color-ink-2:           oklch(48% 0.060 255);   /* muted indigo-grey body */
+  --color-ink-3:           oklch(38% 0.070 265);   /* dimmer — footer, captions */
+  --color-ink-on-dark:     oklch(96% 0.010 215);   /* light text on deep indigo */
+  --color-ink-2-on-dark:   oklch(72% 0.050 225);   /* muted text on deep indigo */
+
+  /* Rules / borders */
+  --color-rule:            oklch(88% 0.030 215);   /* dividers on light bg */
+  --color-rule-on-dark:    oklch(28% 0.120 270);   /* dividers on dark bg */
+
+  /* Brand accent — Electric Cyan family */
+  --color-accent:          oklch(68% 0.150 222);   /* Electric Cyan  #14A8F5 */
+  --color-accent-deep:     oklch(48% 0.140 232);   /* Cyan 900       #006EB5 */
+  --color-accent-strong:   oklch(59% 0.150 228);   /* Cyan 800       #0A8DDB */
+  --color-accent-bright:   oklch(75% 0.130 217);   /* Cyan 600       #35B8FF */
+  --color-accent-light:    oklch(97% 0.030 210);   /* Cyan 200       #DDF7FF */
+  --color-accent-muted:    oklch(62% 0.100 222);   /* spec labels on dark bg */
+
+  /* Brand indigo */
+  --color-brand:           oklch(22% 0.230 270);   /* Deep Indigo    #1B0B82 */
+  --color-brand-mid:       oklch(30% 0.200 270);   /* hover / lighter indigo */
+  --color-brand-soft:      oklch(72% 0.150 267);   /* Periwinkle Glow #8CA4FF */
+
+  /* Interaction */
+  --color-focus:           oklch(68% 0.150 222);   /* same as --color-accent */
+  --color-focus-on-dark:   oklch(75% 0.130 217);   /* accent-bright on dark bg */
+
+  /* ── TYPOGRAPHY ──────────────────────────────────────────────────────── */
+  --font-display: 'DM Serif Display', serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  /* ── TYPE SCALE ──────────────────────────────────────────────────────── */
+  --text-xs:       0.75rem;    /*  12px */
+  --text-sm:       0.875rem;   /*  14px */
+  --text-md:       1rem;       /*  16px */
+  --text-lg:       1.125rem;   /*  18px */
+  --text-xl:       1.375rem;   /*  22px */
+  --text-2xl:      1.875rem;   /*  30px */
+  --text-3xl:      2.5rem;     /*  40px */
+  --text-4xl:      3.25rem;    /*  52px */
+  --text-display:  clamp(2.75rem, 5vw, 4.5rem);
+
+  /* ── SPACING — 4pt scale ─────────────────────────────────────────────── */
+  --space-3xs: 0.25rem;   /*  4px */
+  --space-2xs: 0.5rem;    /*  8px */
+  --space-xs:  0.75rem;   /* 12px */
+  --space-sm:  1rem;      /* 16px */
+  --space-md:  1.5rem;    /* 24px */
+  --space-lg:  2rem;      /* 32px */
+  --space-xl:  3rem;      /* 48px */
+  --space-2xl: 4.5rem;    /* 72px */
+  --space-3xl: 7rem;      /* 112px */
+
+  /* ── MOTION ──────────────────────────────────────────────────────────── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --dur-short:   180ms;
+  --dur-med:     320ms;
+
+  /* ── RADII ────────────────────────────────────────────────────────────── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-pill: 100px;
+
+  /* ── Z-SCALE ──────────────────────────────────────────────────────────── */
+  --z-base:  1;
+  --z-raised: 10;
+  --z-nav:   100;
+  --z-modal: 200;
+  --z-toast: 300;
+}
