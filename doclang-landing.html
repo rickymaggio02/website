@@ -556,8 +556,10 @@ h1, h2, h3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-3xl);
-  align-items: start;
+  align-items: stretch;
 }
+
+.what-layout > div:last-child { align-self: stretch; }
 
 .what h2 {
   font-family: var(--font-display);
@@ -632,8 +634,14 @@ h1, h2, h3 {
 }
 
 .why-head {
-  max-width: 460px;
+  max-width: none;
   margin-bottom: var(--space-2xl);
+}
+
+.why-head h2 { white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .why-head h2 { white-space: normal; }
 }
 
 .why-head h2 {
@@ -874,66 +882,83 @@ h1, h2, h3 {
 .compare-stack {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  position: sticky;
+  top: var(--space-xl);
 }
 
 .compare-card {
   border-radius: var(--radius-md);
   overflow: hidden;
   font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
 }
 
 .compare-card-header {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: var(--space-xs) var(--space-md);
+  gap: 8px;
+  padding: var(--space-sm) var(--space-lg);
   font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
 .compare-card-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .compare-card--before .compare-card-header {
-  background: oklch(18% 0.06 22);
-  color: oklch(58% 0.10 22);
-  border-bottom: 1px solid oklch(26% 0.10 22);
+  background: oklch(20% 0.07 22);
+  color: oklch(82% 0.10 22);
+  border-bottom: 1px solid oklch(30% 0.10 22);
 }
 
-.compare-card--before .compare-card-dot { background: oklch(60% 0.18 22); }
+.compare-card--before .compare-card-dot {
+  background: oklch(68% 0.20 22);
+  box-shadow: 0 0 8px oklch(68% 0.20 22 / 0.6);
+}
 
 .compare-card--before .compare-card-body {
-  background: oklch(15% 0.04 22);
-  color: oklch(48% 0.06 22);
-  padding: var(--space-md);
-  font-size: 11px;
-  line-height: 1.65;
+  background: oklch(16% 0.04 22);
+  color: oklch(80% 0.04 22);
+  padding: var(--space-lg);
+  font-size: 14px;
+  line-height: 1.75;
   word-break: break-word;
+  letter-spacing: 0.01em;
 }
 
 .compare-card--after .compare-card-header {
-  background: oklch(17% 0.08 152);
-  color: oklch(58% 0.10 155);
-  border-bottom: 1px solid oklch(24% 0.10 152);
+  background: oklch(19% 0.08 152);
+  color: oklch(82% 0.12 152);
+  border-bottom: 1px solid oklch(28% 0.10 152);
 }
 
-.compare-card--after .compare-card-dot { background: oklch(64% 0.18 152); }
+.compare-card--after .compare-card-dot {
+  background: oklch(68% 0.20 152);
+  box-shadow: 0 0 8px oklch(68% 0.20 152 / 0.6);
+}
 
 .compare-card--after .compare-card-body {
-  background: oklch(14% 0.06 152);
-  color: oklch(62% 0.06 190);
-  padding: var(--space-md);
-  font-size: 11px;
-  line-height: 1.85;
+  background: oklch(15% 0.05 152);
+  padding: var(--space-lg);
+  font-size: 14px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
 }
+
+/* Brighter token colors inside the compare-after card for stronger contrast on dark green */
+.compare-card--after .tok-tag     { color: oklch(80% 0.16 288); }
+.compare-card--after .tok-self    { color: oklch(76% 0.14 286); }
+.compare-card--after .tok-key     { color: oklch(78% 0.13 240); }
+.compare-card--after .tok-str     { color: oklch(84% 0.15 188); }
+.compare-card--after .tok-content { color: oklch(96% 0.02 260); }
 
 /* ── WHY ICONS ───────────────────────────────────────────────────────── */
 .why-icon {
@@ -1058,29 +1083,83 @@ h1, h2, h3 {
 .faq-list { }
 
 .faq-item {
-  padding: var(--space-lg) 0;
   border-top: 1px solid var(--color-rule);
 }
 
 .faq-item:last-child { border-bottom: 1px solid var(--color-rule); }
 
-.faq-item h3 {
+.faq-item > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-md) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
   font-size: var(--text-md);
   font-weight: 500;
   color: var(--color-ink);
   line-height: 1.4;
-  margin-bottom: var(--space-sm);
+  transition: color var(--dur-short) var(--ease-out);
 }
 
-.faq-item p {
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary:hover { color: var(--color-accent-deep); }
+.faq-item > summary:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.faq-icon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  position: relative;
+  color: var(--color-ink-3);
+  transition: transform var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
+}
+
+.faq-icon::before,
+.faq-icon::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+  top: 50%;
+  left: 50%;
+}
+
+.faq-icon::before {
+  width: 14px;
+  height: 1.5px;
+  transform: translate(-50%, -50%);
+}
+
+.faq-icon::after {
+  width: 1.5px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+
+.faq-item[open] > summary { color: var(--color-ink); }
+.faq-item[open] .faq-icon { color: var(--color-ink); }
+.faq-item[open] .faq-icon::after { transform: translate(-50%, -50%) scaleY(0); }
+
+.faq-answer {
+  padding: 0 0 var(--space-lg) 0;
+}
+
+.faq-answer p {
   font-size: var(--text-sm);
   color: var(--color-ink-2);
   line-height: 1.75;
 }
 
-.faq-item p + p { margin-top: var(--space-xs); }
+.faq-answer p + p { margin-top: var(--space-xs); }
 
-.faq-item em {
+.faq-answer em {
   color: var(--color-ink);
   font-style: normal;
   font-weight: 500;
@@ -1189,6 +1268,8 @@ h1, h2, h3 {
   .hero-logo { display: none; }
 
   .faq-sidebar h2 { position: static; }
+
+  .compare-stack { position: static; }
 }
 
 @media (max-width: 640px) {
@@ -1608,31 +1689,41 @@ h1, h2, h3 {
       </div>
       <div class="faq-list">
 
-        <div class="faq-item">
-          <h3>Is this just another document parser?</h3>
-          <p>No. Parsers convert documents into some proprietary output format. DocLang is a standard — a shared specification that any parser, any converter, any AI tool can implement. The goal is interoperability, not another tool to integrate.</p>
-        </div>
+        <details class="faq-item">
+          <summary>Is this just another document parser?<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>No. Parsers convert documents into some proprietary output format. DocLang is a standard — a shared specification that any parser, any converter, any AI tool can implement. The goal is interoperability, not another tool to integrate.</p>
+          </div>
+        </details>
 
-        <div class="faq-item">
-          <h3>What's wrong with just using Docling / FineReader / MyParser instead of DocLang?</h3>
-          <p>Nothing — that's the point. Enable the DocLang output and the structured data they produce stops being tied to your specific pipeline configuration. It becomes consumable by any downstream system that speaks the DocLang standard.</p>
-          <p><em>Docling and ABBYY FineReader Engine</em> already natively support the DocLang standard.</p>
-        </div>
+        <details class="faq-item">
+          <summary>What's wrong with just using Docling / FineReader / MyParser instead of DocLang?<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>Nothing — that's the point. Enable the DocLang output and the structured data they produce stops being tied to your specific pipeline configuration. It becomes consumable by any downstream system that speaks the DocLang standard.</p>
+            <p><em>Docling and ABBYY FineReader Engine</em> already natively support the DocLang standard.</p>
+          </div>
+        </details>
 
-        <div class="faq-item">
-          <h3>How is this different from what PDF already contains?</h3>
-          <p>PDF is a presentation format. It tells a renderer where to draw pixels. DocLang is a semantic format — it tells a model what content <em>is</em>. A PDF table and a DocLang table are fundamentally different objects.</p>
-        </div>
+        <details class="faq-item">
+          <summary>How is this different from what PDF already contains?<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>PDF is a presentation format. It tells a renderer where to draw pixels. DocLang is a semantic format — it tells a model what content <em>is</em>. A PDF table and a DocLang table are fundamentally different objects.</p>
+          </div>
+        </details>
 
-        <div class="faq-item">
-          <h3>Who governs the spec?</h3>
-          <p>The DocLang Specification development process is governed by Joint Development Foundation Projects. DocLang is an LF AI &amp; Data project. The DocLang working group — founded by IBM, NVIDIA, Red Hat, and ABBYY — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
-        </div>
+        <details class="faq-item">
+          <summary>Who governs the spec?<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>The DocLang Specification development process is governed by Joint Development Foundation Projects. DocLang is an LF AI &amp; Data project. The DocLang working group — founded by IBM, NVIDIA, Red Hat, and ABBYY — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
+          </div>
+        </details>
 
-        <div class="faq-item">
-          <h3>Can I contribute?</h3>
-          <p>Yes. The spec, the reference implementation, and the working group processes are all public. Join the GitHub discussion, open an issue, or attend a working group session. The standard improves when more perspectives are in the room.</p>
-        </div>
+        <details class="faq-item">
+          <summary>Can I contribute?<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-answer">
+            <p>Yes. The spec, the reference implementation, and the working group processes are all public. Join the GitHub discussion, open an issue, or attend a working group session. The standard improves when more perspectives are in the room.</p>
+          </div>
+        </details>
 
       </div>
     </div>
