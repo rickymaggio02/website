@@ -1556,7 +1556,7 @@ h1, h2, h3 {
               <span class="compare-card-dot" aria-hidden="true"></span>
               What DocLang returns
             </div>
-            <div class="compare-card-body"><span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-tag">&lt;/heading&gt;</span><br><span class="tok-tag">&lt;otsl&gt;</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;nl/&gt;</span><span class="tok-tag">&lt;/otsl&gt;</span><br><span class="tok-tag">&lt;picture&gt;</span><span class="tok-tag">&lt;uri&gt;</span><span class="tok-content">fig-3.2.png</span><span class="tok-tag">&lt;/uri&gt;</span><span class="tok-tag">&lt;/picture&gt;</span><br><span class="tok-tag">&lt;meta&gt;</span><span class="tok-tag">&lt;author&gt;</span><span class="tok-content">J. Smith</span><span class="tok-tag">&lt;/author&gt;</span><span class="tok-tag">&lt;/meta&gt;</span></div>
+            <div class="compare-card-body"><span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-tag">&lt;/heading&gt;</span><br><span class="tok-tag">&lt;table&gt;</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;nl/&gt;</span><span class="tok-tag">&lt;/table&gt;</span><br><span class="tok-tag">&lt;picture&gt;</span><span class="tok-tag">&lt;uri&gt;</span><span class="tok-content">fig-3.2.png</span><span class="tok-tag">&lt;/uri&gt;</span><span class="tok-tag">&lt;/picture&gt;</span><br><span class="tok-tag">&lt;meta&gt;</span><span class="tok-tag">&lt;author&gt;</span><span class="tok-content">J. Smith</span><span class="tok-tag">&lt;/author&gt;</span><span class="tok-tag">&lt;/meta&gt;</span></div>
           </div>
 
         </div>
@@ -1639,10 +1639,10 @@ h1, h2, h3 {
       <div>
         <div class="code-card">
           <div class="code-card-header">
-            <span class="code-card-label">DocLang · v1.0.0</span>
-            <span class="code-card-badge">quarterly_report.doclang</span>
+            <span class="code-card-label">DocLang</span>
+            <span class="code-card-badge">quarterly_report.dclg.xml</span>
           </div>
-          <pre class="code-body"><code><span class="tok-tag">&lt;doclang</span> <span class="tok-key">version</span>=<span class="tok-str">"1.0.0"</span><span class="tok-tag">&gt;</span>
+          <pre class="code-body"><code><span class="tok-tag">&lt;doclang</span><span class="tok-tag">&gt;</span>
 
   <span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span>
     <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"50"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"310"</span><span class="tok-self">/&gt;</span>
@@ -1650,12 +1650,12 @@ h1, h2, h3 {
     <span class="tok-content">Q3 Financial Summary</span>
   <span class="tok-tag">&lt;/heading&gt;</span>
 
-  <span class="tok-tag">&lt;otsl&gt;</span>
+  <span class="tok-tag">&lt;table&gt;</span>
     <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"50"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"400"</span><span class="tok-self">/&gt;</span>
     <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"450"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"600"</span><span class="tok-self">/&gt;</span>
     <span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Quarter</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">YoY</span><span class="tok-self">&lt;nl/&gt;</span>
     <span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">+18%</span><span class="tok-self">&lt;nl/&gt;</span>
-  <span class="tok-tag">&lt;/otsl&gt;</span>
+  <span class="tok-tag">&lt;/table&gt;</span>
 
 <span class="tok-tag">&lt;/doclang&gt;</span></code></pre>
         </div>
@@ -1714,7 +1714,7 @@ h1, h2, h3 {
         <details class="faq-item">
           <summary>Who governs the spec?<span class="faq-icon" aria-hidden="true"></span></summary>
           <div class="faq-answer">
-            <p>The DocLang Specification development process is governed by Joint Development Foundation Projects. DocLang is an LF AI &amp; Data project. The DocLang working group — founded by IBM, NVIDIA, Red Hat, and ABBYY — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
+            <p>The DocLang Specification development process is governed by Joint Development Foundation Projects. DocLang is an LF AI &amp; Data project. The DocLang working group — founded by IBM, NVIDIA, Red Hat, ABBYY, and HumanSignal — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
           </div>
         </details>
 
@@ -1739,7 +1739,7 @@ h1, h2, h3 {
       <div class="cta-actions">
         <a href="#" class="btn-accent">Read the spec</a>
         <a href="https://github.com/doclang-project" class="btn-ghost-light" rel="noopener">View on GitHub →</a>
-        <a href="#" class="btn-ghost-light">Join the working group</a>
+        <a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification" class="btn-ghost-light">Join the working group</a>
       </div>
     </div>
   </div>
