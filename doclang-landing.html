@@ -3,584 +3,1637 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DocLang — The AI Document Format</title>
+<title>DocLang — The AI Document Standard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Hallmark · macrostructure: Stat-Led · genre: modern-minimal · tone: authoritative
+ * theme: custom (Deep Indigo #1B0B82 + Electric Cyan #14A8F5 — DocLang_MiniBrandGuide.pdf)
+ * nav: N5-condensed · footer: Ft2 inline · enrichment: none (typography only)
+ * pre-emit critique: P4 H4 E4 S4 R4 V4
+ */
 
-  :root {
-    --charcoal: #46474b;
-    --charcoal-mid: #5a5b60;
-    --ink: #24262b;
-    --cyan: #10aeea;
-    --cyan-deep: #004fb0;
-    --cyan-light: #e8f8ff;
-    --cyan-wash: #f3fbff;
-    --cyan-border: #a9def5;
-    --ice: #f7fbfd;
-    --border: #dbe7ee;
-    --text: #303238;
-    --muted: #687783;
-    --white: #ffffff;
-  }
+/* ── RESET ────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { overflow-x: clip; }
 
+@media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
+}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    color: var(--text);
-    background: var(--white);
-    -webkit-font-smoothing: antialiased;
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV — N5 condensed ───────────────────────────────────────────────── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  height: 60px;
+  padding: 0 var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-paper-nav);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logomark {
+  height: 40px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-ink-2);
+  text-decoration: none;
+  transition: color var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.nav-links a:hover { color: var(--color-ink); }
+
+.nav-links a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.nav-cta {
+  background: var(--color-brand) !important;
+  color: var(--color-ink-on-dark) !important;
+  font-weight: 500 !important;
+  padding: var(--space-2xs) var(--space-md) !important;
+  border-radius: var(--radius-pill) !important;
+  transition: background var(--dur-short) var(--ease-out) !important;
+}
+
+.nav-cta:hover { background: var(--color-brand-mid) !important; }
+
+/* ── SHARED ───────────────────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
+}
+
+/* Heading overflow discipline */
+h1, h2, h3 {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* ── BUTTONS ──────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-brand);
+  color: var(--color-ink-on-dark);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: background var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.btn-primary:hover { background: var(--color-brand-mid); }
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-ink-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  padding: var(--space-xs) 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-rule);
+  transition:
+    color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.btn-secondary:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink-2);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-xs) var(--space-lg);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: background var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.btn-accent:hover { background: var(--color-accent-bright); }
+
+.btn-accent:focus-visible {
+  outline: 2px solid var(--color-ink-on-dark);
+  outline-offset: 3px;
+}
+
+.btn-ghost-light {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-ink-2-on-dark);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  padding: var(--space-xs) 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-rule-on-dark);
+  transition:
+    color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.btn-ghost-light:hover {
+  color: var(--color-ink-on-dark);
+  border-color: var(--color-ink-2-on-dark);
+}
+
+.btn-ghost-light:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── HERO — Stat-Led assertion ────────────────────────────────────────── */
+.hero {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-2xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.hero-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-logo img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-deep);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-kicker-rule {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-lg);
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--color-accent-deep);
+}
+
+.hero-sub {
+  font-size: var(--text-xl);
+  line-height: 1.65;
+  color: var(--color-ink-2);
+  max-width: 560px;
+  margin-bottom: var(--space-2xl);
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+/* ── STAT GRID ────────────────────────────────────────────────────────── */
+.stats {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stat-cell {
+  padding: var(--space-xl) var(--space-xl) var(--space-xl) 0;
+  border-right: 1px solid var(--color-rule);
+}
+
+.stat-cell:last-child { border-right: none; }
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  color: var(--color-brand);
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.55;
+}
+
+/* ── PROOF BAR ────────────────────────────────────────────────────────── */
+.proof {
+  border-bottom: 1px solid var(--color-rule);
+  background: var(--color-paper-2);
+}
+
+.proof-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.proof-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.proof-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--color-rule);
+  flex-shrink: 0;
+}
+
+.proof-logos {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+.proof-logo {
+  display: flex;
+  align-items: center;
+  color: var(--color-ink);
+  opacity: 0.45;
+  transition: opacity var(--dur-short) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.proof-logo:hover { opacity: 0.75; }
+
+.proof-logo svg {
+  display: block;
+  fill: currentColor;
+}
+
+/* Wordmarks — wider, shorter */
+.proof-logo--ibm svg   { height: 18px; width: auto; }
+.proof-logo--abbyy svg { height: 20px; width: auto; }
+
+/* Icon marks — squarish, slightly taller to match visual weight */
+.proof-logo--lf svg     { height: 26px; width: auto; }
+.proof-logo--nvidia svg { height: 22px; width: auto; }
+.proof-logo--redhat svg { height: 24px; width: auto; }
+.proof-logo--hs svg     { height: 24px; width: auto; }
+
+/* ── PROBLEM — dark indigo ────────────────────────────────────────────── */
+.problem {
+  background: var(--color-paper-dark);
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.problem-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.problem h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 3.5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--color-ink-on-dark);
+  margin-bottom: var(--space-xl);
+}
+
+.problem h2 em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.problem-body {
+  font-size: var(--text-lg);
+  color: var(--color-ink-2-on-dark);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+.problem-body + .problem-body { margin-top: var(--space-md); }
+
+/* Parse report card */
+.parse-report {
+  background: oklch(14% 0.150 272);
+  border: 1px solid oklch(30% 0.140 270);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.pr-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: oklch(17% 0.165 272);
+  border-bottom: 1px solid oklch(24% 0.150 270);
+}
+
+.pr-dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.pr-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.pr-dot--red    { background: oklch(58% 0.22 22); }
+.pr-dot--yellow { background: oklch(72% 0.17 85); }
+.pr-dot--green  { background: oklch(66% 0.18 148); }
+
+.pr-cmd {
+  font-size: var(--text-sm);
+  color: oklch(55% 0.06 250);
+  font-family: inherit;
+  margin-left: var(--space-xs);
+}
+
+.pr-cmd em {
+  font-style: normal;
+  color: oklch(72% 0.08 260);
+}
+
+.pr-failures {
+  padding: var(--space-xs) 0;
+}
+
+.pr-item {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid oklch(20% 0.130 270);
+}
+
+.pr-item:last-child { border-bottom: none; }
+
+.pr-item-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: 6px;
+}
+
+.pr-x {
+  color: oklch(62% 0.22 22);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pr-test {
+  font-size: var(--text-sm);
+  color: oklch(88% 0.015 270);
+  font-weight: 500;
+}
+
+.pr-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font-size: 11px;
+  padding-left: 20px;
+  line-height: 1.85;
+}
+
+.pr-key {
+  color: oklch(44% 0.055 255);
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.pr-good { color: oklch(66% 0.16 152); }
+.pr-bad  { color: oklch(64% 0.20 22); }
+
+.pr-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid oklch(24% 0.150 270);
+  background: oklch(17% 0.165 272);
+  font-size: 11px;
+}
+
+.pr-count-fail { color: oklch(62% 0.22 22); font-weight: 600; }
+.pr-count-pass { color: oklch(40% 0.040 255); }
+.pr-sep        { color: oklch(32% 0.060 255); }
+
+/* ── WHAT IS DOCLANG ──────────────────────────────────────────────────── */
+.what {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-2xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.what-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.what h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 2.8vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-lg);
+}
+
+.what-body {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.8;
+}
+
+.what-body + .what-body { margin-top: var(--space-md); }
+
+.what-callout {
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+.callout-heading {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-deep);
+  margin-bottom: var(--space-md);
+}
+
+.callout-list {
+  list-style: none;
+}
+
+.callout-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-rule);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  line-height: 1.65;
+}
+
+.callout-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.list-dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ── WHY — rule-separated rows ────────────────────────────────────────── */
+.why {
+  background: var(--color-paper-2);
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.why-head {
+  max-width: 460px;
+  margin-bottom: var(--space-2xl);
+}
+
+.why-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 2.8vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-ink);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.feature-card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.feature-card-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-brand);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.01em;
+}
+
+.feature-card-desc {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.65;
+}
+
+/* ── BUSINESS NOTES (For business teams) ─────────────────────────────── */
+.business-notes {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-rule);
+}
+
+.business-notes-title {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-deep);
+  margin-bottom: var(--space-lg);
+}
+
+.business-notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.business-note-card {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.business-note-label {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 400;
+  color: var(--color-ink);
+  margin-bottom: var(--space-xs);
+  line-height: 1.3;
+}
+
+.business-note-card p {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.7;
+}
+
+/* ── HOW IT WORKS ─────────────────────────────────────────────────────── */
+.how {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.how-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.how h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-md);
+}
+
+.how-body {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.75;
+  margin-bottom: var(--space-lg);
+}
+
+.how-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-accent-deep);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent-bright);
+  padding-bottom: 2px;
+  transition:
+    color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.how-link:hover {
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.how-link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.how-spec {
+  background: var(--color-paper-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+.spec-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-muted);
+  margin-bottom: var(--space-md);
+}
+
+.spec-list {
+  list-style: none;
+}
+
+.spec-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--color-rule-on-dark);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2-on-dark);
+  line-height: 1.6;
+}
+
+.spec-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.spec-dot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+/* ── CODE CARD — syntax-highlighted JSON (How It Works) ─────────────── */
+.code-card {
+  background: oklch(14% 0.150 272);
+  border: 1px solid oklch(30% 0.140 270);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.code-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: oklch(17% 0.165 272);
+  border-bottom: 1px solid oklch(24% 0.150 270);
+}
+
+.code-card-label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: oklch(52% 0.055 250);
+}
+
+.code-card-badge {
+  font-size: 10px;
+  color: oklch(65% 0.12 222);
+  font-family: ui-monospace, 'SF Mono', monospace;
+}
+
+.code-body {
+  padding: var(--space-lg);
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.9;
+  color: oklch(68% 0.04 260);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.tok-tag    { color: oklch(68% 0.14 288); }  /* element tags — blue-violet */
+.tok-self   { color: oklch(62% 0.11 286); }  /* self-closing: location, ched, fcel, nl */
+.tok-key    { color: oklch(64% 0.10 240); }  /* attribute names */
+.tok-str    { color: oklch(72% 0.13 188); }  /* attribute / string values */
+.tok-num    { color: oklch(72% 0.16 65);  }  /* numbers */
+.tok-bool-t { color: oklch(68% 0.15 152); }  /* true */
+.tok-bool-f { color: oklch(64% 0.18 22);  }  /* false */
+.tok-punct  { color: oklch(42% 0.04 260); }  /* brackets, punctuation */
+.tok-content{ color: oklch(84% 0.03 260); }  /* text content inside elements */
+
+/* ── COMPARE STACK — before / after (What Is DocLang) ───────────────── */
+.compare-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.compare-card {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+}
+
+.compare-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-xs) var(--space-md);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.compare-card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.compare-card--before .compare-card-header {
+  background: oklch(18% 0.06 22);
+  color: oklch(58% 0.10 22);
+  border-bottom: 1px solid oklch(26% 0.10 22);
+}
+
+.compare-card--before .compare-card-dot { background: oklch(60% 0.18 22); }
+
+.compare-card--before .compare-card-body {
+  background: oklch(15% 0.04 22);
+  color: oklch(48% 0.06 22);
+  padding: var(--space-md);
+  font-size: 11px;
+  line-height: 1.65;
+  word-break: break-word;
+}
+
+.compare-card--after .compare-card-header {
+  background: oklch(17% 0.08 152);
+  color: oklch(58% 0.10 155);
+  border-bottom: 1px solid oklch(24% 0.10 152);
+}
+
+.compare-card--after .compare-card-dot { background: oklch(64% 0.18 152); }
+
+.compare-card--after .compare-card-body {
+  background: oklch(14% 0.06 152);
+  color: oklch(62% 0.06 190);
+  padding: var(--space-md);
+  font-size: 11px;
+  line-height: 1.85;
+}
+
+/* ── WHY ICONS ───────────────────────────────────────────────────────── */
+.why-icon {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2px;
+  color: var(--color-brand);
+}
+
+/* ── CONTRIBUTE ───────────────────────────────────────────────────────── */
+.contribute {
+  background: var(--color-accent-light);
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.contribute h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-sm);
+}
+
+.contribute-body {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.75;
+  max-width: 520px;
+  margin-bottom: var(--space-md);
+}
+
+.contribute-card {
+  display: block;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-xl);
+  max-width: 640px;
+}
+
+.contribute-card-lead {
+  font-size: var(--text-md);
+  color: var(--color-ink);
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
+}
+
+.contribute-card-lead a {
+  color: var(--color-accent-deep);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent-bright);
+  transition:
+    color var(--dur-short) var(--ease-out),
+    border-color var(--dur-short) var(--ease-out);
+}
+
+.contribute-card-lead a:hover {
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.contribute-links {
+  list-style: none;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-rule);
+}
+
+.contribute-links li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.contribute-links a {
+  color: var(--color-brand);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 130px;
+}
+
+.contribute-links a:hover { color: var(--color-brand-mid); }
+
+.contribute-link-desc {
+  color: var(--color-ink-2);
+}
+
+/* ── FAQ — sidebar layout ─────────────────────────────────────────────── */
+.faq {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-3xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.faq-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: var(--space-3xl);
+  align-items: start;
+}
+
+.faq-sidebar h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  position: sticky;
+  top: calc(60px + var(--space-xl));
+}
+
+.faq-list { }
+
+.faq-item {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.faq-item:last-child { border-bottom: 1px solid var(--color-rule); }
+
+.faq-item h3 {
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--color-ink);
+  line-height: 1.4;
+  margin-bottom: var(--space-sm);
+}
+
+.faq-item p {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.75;
+}
+
+.faq-item p + p { margin-top: var(--space-xs); }
+
+.faq-item em {
+  color: var(--color-ink);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ── CLOSING CTA — dark indigo ────────────────────────────────────────── */
+.cta {
+  background: var(--color-paper-dark);
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.cta-inner {
+  max-width: 680px;
+}
+
+.cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 3.5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--color-ink-on-dark);
+  margin-bottom: var(--space-md);
+}
+
+.cta-body {
+  font-size: var(--text-xl);
+  color: var(--color-ink-2-on-dark);
+  line-height: 1.65;
+  max-width: 520px;
+  margin-bottom: var(--space-2xl);
+  font-weight: 300;
+}
+
+.cta-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+/* ── FOOTER — Ft2 Inline single line ─────────────────────────────────── */
+.footer {
+  background: var(--color-paper-dark-2);
+  border-top: 1px solid var(--color-rule-on-dark);
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-size: var(--text-xs);
+  color: var(--color-ink-2-on-dark);
+  text-decoration: none;
+  transition: color var(--dur-short) var(--ease-out);
+  white-space: nowrap;
+}
+
+.footer-links a:hover { color: var(--color-ink-on-dark); }
+
+.footer-links a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.footer-copy {
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-cell:nth-child(2) { border-right: none; }
+  .stat-cell:nth-child(3) { border-right: 1px solid var(--color-rule); }
+  .stat-cell:nth-child(3),
+  .stat-cell:nth-child(4) {
+    border-top: 1px solid var(--color-rule);
   }
 
-  /* ── NAV ── */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.94);
-    border-bottom: 1px solid var(--border);
-    padding: 0 3rem;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 68px;
-    backdrop-filter: blur(12px);
-  }
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px; text-decoration: none;
-  }
-  .nav-logomark {
-    width: auto; height: 50px;
-    flex-shrink: 0;
-  }
-  .nav-links {
-    display: flex; gap: 2rem; align-items: center; list-style: none;
-  }
-  .nav-links a {
-    font-size: 14px; color: var(--muted); text-decoration: none;
-    transition: color 0.15s;
-  }
-  .nav-links a:hover { color: var(--cyan-deep); }
-  .nav-cta {
-    background: var(--cyan-deep); color: white;
-    font-size: 13px; font-weight: 500;
-    padding: 8px 18px; border-radius: 6px;
-    text-decoration: none; transition: background 0.15s;
-  }
-  .nav-links a.nav-cta { color: white; }
-  .nav-cta:hover { background: #003d88; }
-  .nav-links a.nav-cta:hover { color: white; }
+  .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .business-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-  /* ── SHARED ── */
-  .section-inner { max-width: 1080px; margin: 0 auto; padding: 5rem 3rem; }
-  .eyebrow {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--cyan-deep);
-    margin-bottom: 0.6rem;
-  }
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 34px; font-weight: 400; letter-spacing: -0.02em;
-    line-height: 1.15; color: var(--charcoal);
-    margin-bottom: 1.5rem;
-  }
-  .body-text {
-    font-size: 15px; color: var(--muted); line-height: 1.75;
-    max-width: 600px;
-  }
-  .body-text + .body-text { margin-top: 1rem; }
-  section { border-bottom: 1px solid var(--border); }
-
-  /* ── HERO ── */
-  .hero {
-    border-bottom: 1px solid var(--border);
-    background:
-      radial-gradient(circle at 78% 18%, rgba(16,174,234,0.14), transparent 28rem),
-      linear-gradient(180deg, var(--white) 0%, var(--cyan-wash) 100%);
-  }
-  .hero-inner {
-    max-width: 1080px; margin: 0 auto;
-    padding: 4.5rem 3rem 5rem;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
-    gap: 4rem;
-    align-items: center;
-  }
-  .hero-copy { min-width: 0; }
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .hero-brand-logo {
-    display: block;
-    width: min(460px, 100%);
-    height: auto;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--cyan-light);
-    border: 1px solid var(--cyan-border);
-    border-radius: 20px; padding: 5px 14px;
-    font-size: 12px; font-weight: 500; color: var(--cyan-deep);
-    margin-bottom: 2rem;
-  }
-  .hero-badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cyan); flex-shrink: 0;
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 60px; font-weight: 400;
-    line-height: 1.05; letter-spacing: -0.03em;
-    color: var(--charcoal); max-width: 700px;
-    margin-bottom: 1.5rem;
-  }
-  .hero h1 em { font-style: italic; color: var(--cyan-deep); }
-  .hero-sub {
-    font-size: 17px; color: var(--muted);
-    max-width: 520px; line-height: 1.75;
-    margin-bottom: 2.5rem;
-  }
-  .hero-actions { display: flex; gap: 12px; margin-bottom: 3.5rem; }
-  .btn-primary {
-    background: var(--cyan-deep); color: white;
-    font-size: 14px; font-weight: 500;
-    padding: 13px 26px; border-radius: 8px;
-    text-decoration: none; transition: background 0.15s;
-  }
-  .btn-primary:hover { background: #003d88; }
-  .btn-secondary {
-    border: 1px solid var(--border); color: var(--charcoal);
-    font-size: 14px; padding: 13px 26px; border-radius: 8px;
-    text-decoration: none; transition: background 0.15s;
-    background: var(--white);
-  }
-  .btn-secondary:hover { background: var(--ice); }
-  .btn-orange {
-    background: var(--cyan); color: white;
-    font-size: 15px; font-weight: 500;
-    padding: 14px 32px; border-radius: 8px;
-    text-decoration: none; transition: background 0.15s;
-    display: inline-block;
-  }
-  .btn-orange:hover { background: var(--cyan-deep); }
-  .btn-ghost {
-    color: var(--muted); font-size: 14px;
-    text-decoration: none; padding: 14px 0;
-    border-bottom: 1px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
-  }
-  .btn-ghost:hover { color: var(--cyan-deep); border-color: var(--cyan-deep); }
-
-  .founders {
-    display: flex; align-items: center; gap: 1rem;
-    flex-wrap: wrap;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--border);
-  }
-  .founders-label { font-size: 12px; color: var(--muted); }
-  .lf-badge {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: var(--cyan-light); border: 1px solid var(--cyan-border);
-    border-radius: 6px; padding: 5px 12px;
-    font-size: 12px; font-weight: 500; color: var(--cyan-deep);
-  }
-  .lf-icon {
-    width: 14px; height: 14px; background: var(--cyan-deep);
-    border-radius: 3px; flex-shrink: 0;
-  }
-  .founder-tag {
-    display: inline-block; font-size: 12px; color: var(--muted);
-    background: var(--ice); border: 1px solid var(--border);
-    border-radius: 20px; padding: 4px 12px;
+  .hero-inner,
+  .problem-layout,
+  .what-layout,
+  .how-layout,
+  .faq-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-xl);
   }
 
-  /* ── THE PROBLEM ── */
-  .problem { background: var(--charcoal); }
-  .problem .eyebrow { color: rgba(16,174,234,0.95); }
-  .problem .section-title { color: white; }
-  .problem .body-text { color: rgba(255,255,255,0.55); max-width: 580px; }
+  .hero-logo { display: none; }
 
-  /* ── WHAT IS DOCLANG ── */
-  .what-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-    align-items: start;
-  }
-  .what-bullets { margin-top: 2rem; }
-  .what-bullets li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 14px; color: var(--muted); line-height: 1.6;
-    padding: 0.75rem 0; border-bottom: 1px solid var(--border);
-    list-style: none;
-  }
-  .what-bullets li:last-child { border-bottom: none; }
-  .bullet-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cyan); flex-shrink: 0; margin-top: 6px;
-  }
-  .what-right {
-    background: var(--ice); border-radius: 12px;
-    padding: 2rem; border: 1px solid var(--border);
-  }
-  .what-right h3 {
-    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--cyan-deep); margin-bottom: 1.25rem;
+  .faq-sidebar h2 { position: static; }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --space-3xl: 4rem;
+    --space-2xl: 3rem;
   }
 
-  /* ── WHY DOCLANG ── */
-  .why { background: var(--ice); }
-  .why-rows { margin-top: 1rem; }
-  .why-row {
-    display: flex; gap: 2.5rem;
-    padding: 2rem 0; border-bottom: 1px solid var(--border);
+  .nav { padding: 0 var(--space-md); }
+  .nav-links li:not(:last-child) { display: none; }
+
+  .container {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+  .stat-cell {
+    border-right: none !important;
+    border-top: 1px solid var(--color-rule);
+    padding-left: 0;
+  }
+  .stat-cell:first-child { border-top: none; }
+
+  .features-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .business-notes-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-actions,
+  .cta-actions {
+    flex-direction: column;
     align-items: flex-start;
   }
-  .why-row:first-child { padding-top: 0; }
-  .why-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .why-num {
-    font-size: 12px; color: var(--muted);
-    min-width: 30px; padding-top: 3px;
-    font-variant-numeric: tabular-nums;
-  }
-  .why-content h3 {
-    font-size: 16px; font-weight: 500; color: var(--charcoal);
-    margin-bottom: 8px;
-  }
-  .why-content p {
-    font-size: 14px; color: var(--muted); line-height: 1.7;
-    max-width: 560px;
-  }
-  .why-content p + p { margin-top: 10px; }
-  .business-note {
-    font-size: 13px; color: var(--muted); line-height: 1.65;
-    padding: 0.85rem 1rem; margin-top: 0.85rem;
-    background: white; border-radius: 8px;
-    border-left: 3px solid var(--cyan);
-  }
-  .business-note strong { color: var(--charcoal); font-weight: 500; }
 
-  /* ── HOW IT WORKS ── */
-  .how-inner {
-    max-width: 1080px; margin: 0 auto; padding: 5rem 3rem;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  .footer {
+    padding: var(--space-md);
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .how-left .eyebrow { margin-bottom: 0.75rem; }
-  .how-left h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px; color: var(--charcoal); letter-spacing: -0.02em;
-    line-height: 1.2; margin-bottom: 1rem;
-  }
-  .how-left p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .how-right {
-    background: var(--charcoal); border-radius: 12px;
-    padding: 2rem;
-  }
-  .how-right h3 {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
-    text-transform: uppercase; color: rgba(255,255,255,0.4);
-    margin-bottom: 1rem;
-  }
-  .spec-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 14px; color: var(--cyan); text-decoration: none;
-    font-weight: 500; margin-top: 1.25rem;
-    border-bottom: 1px solid rgba(16,174,234,0.35);
-    padding-bottom: 2px; transition: border-color 0.15s;
-  }
-  .spec-link:hover { border-color: var(--cyan); }
-
-  /* ── CONTRIBUTE — placeholder ── */
-  .contribute { background: var(--cyan-light); }
-  .contribute .section-title { color: var(--charcoal); }
-  .contribute-placeholder {
-    background: white; border: 1px dashed var(--cyan-border);
-    border-radius: 12px; padding: 2rem;
-    text-align: center; color: var(--muted); font-size: 14px;
-    margin-top: 1.5rem; line-height: 1.7;
-  }
-
-  /* ── FAQ ── */
-  .faq-list { margin-top: 2rem; max-width: 660px; }
-  .faq-item { padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
-  .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .faq-item h3 {
-    font-size: 15px; font-weight: 500; color: var(--charcoal);
-    margin-bottom: 8px; line-height: 1.4;
-  }
-  .faq-item p { font-size: 14px; color: var(--muted); line-height: 1.7; }
-  .faq-item p + p { margin-top: 8px; }
-  .faq-item em { color: var(--charcoal); font-style: normal; font-weight: 500; }
-
-  /* ── CTA ── */
-  .cta { background: var(--cyan-light); border-bottom: none; }
-  .cta-inner {
-    max-width: 1080px; margin: 0 auto;
-    padding: 6rem 3rem; text-align: center;
-  }
-  .cta-inner .eyebrow { margin-bottom: 1rem; }
-  .cta-inner h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 44px; font-weight: 400; letter-spacing: -0.02em;
-    color: var(--charcoal); line-height: 1.1; margin-bottom: 1.25rem;
-  }
-  .cta-inner p {
-    font-size: 15px; color: var(--muted); max-width: 420px;
-    margin: 0 auto 2.5rem; line-height: 1.75;
-  }
-  .cta-actions {
-    display: flex; align-items: center; justify-content: center;
-    gap: 1.5rem; flex-wrap: wrap;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--charcoal); padding: 1.75rem 3rem;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 1rem;
-  }
-  .footer-links {
-    display: flex; gap: 1.5rem; flex-wrap: wrap;
-  }
-  .footer-links a {
-    font-size: 13px; color: rgba(255,255,255,0.45);
-    text-decoration: none; transition: color 0.15s;
-  }
-  .footer-links a:hover { color: rgba(255,255,255,0.8); }
-  .footer-copy {
-    font-size: 12px; color: rgba(255,255,255,0.3);
-  }
-
-  @media (max-width: 760px) {
-    nav { padding: 0 1.25rem; height: auto; min-height: 68px; gap: 1rem; }
-    .nav-logomark { height: 46px; }
-    .nav-links { gap: 1rem; justify-content: flex-end; flex-wrap: wrap; }
-    .nav-links a { font-size: 13px; }
-    .nav-links li:not(:last-child) { display: none; }
-    .hero-inner, .section-inner, .how-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
-    .hero-visual { order: -1; justify-content: flex-start; }
-    .hero h1 { font-size: 44px; }
-    .hero-brand-logo { width: min(340px, 100%); }
-    .hero-actions, .cta-actions { align-items: stretch; flex-direction: column; }
-    .what-grid, .how-inner { grid-template-columns: 1fr; gap: 2rem; }
-    footer { padding: 1.5rem; }
-  }
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <img class="nav-logomark" src="logos/doclang-logo.png" alt="DocLang">
+<!-- NAV — N5 condensed -->
+<nav class="nav" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="DocLang home">
+    <img class="nav-logomark" src="logos/DocLang_Color.svg" alt="DocLang">
   </a>
   <ul class="nav-links">
     <li><a href="#what">Standard</a></li>
     <li><a href="#how">Docs</a></li>
-    <li><a href="https://github.com/doclang">GitHub</a></li>
-    <li><a href="#why">Why DocLang</a></li>
+    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
     <li><a href="#cta" class="nav-cta">Get started</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-        Open standard · Joint Development Foundation Project
+<!-- HERO — Stat-Led assertion -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-kicker">
+          <span class="hero-kicker-rule" aria-hidden="true"></span>
+          Open standard · Joint Development Foundation Project
+        </div>
+        <h1 id="hero-heading">The AI native<br>document <em>format.</em></h1>
+        <p class="hero-sub">PDF was built for print. DOCX was built for editors. DocLang is built for what comes next — a machine-readable document standard your models can actually trust.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn-primary">Read the spec</a>
+          <a href="https://github.com/doclang-project" class="btn-secondary" rel="noopener">View on GitHub →</a>
+        </div>
       </div>
-      <h1>The AI Native document<br><em>format.</em></h1>
-      <p class="hero-sub">PDF, DOCX, HTML — every format your pipeline ingests is a gamble. Structure gets lost. Tables break. Reading order is guessed. DocLang is the open standard that gives documents the consistent, machine-readable representation they've always needed. Built for AI.</p>
-      <div class="hero-actions">
-        <a href="#" class="btn-primary">Read the spec</a>
-        <a href="https://github.com/doclang" class="btn-secondary">View on GitHub →</a>
-      </div>
-      <div class="founders">
-        <span class="founders-label">An</span>
-        <div class="lf-badge"><div class="lf-icon"></div>LF AI & Data project</div>
-        <span class="founders-label">founded by</span>
-        <span class="founder-tag">ABBYY</span>
-        <span class="founder-tag">IBM</span>
-        <span class="founder-tag">NVIDIA</span>
-        <span class="founder-tag">Red Hat</span>
+      <div class="hero-logo" aria-hidden="true">
+        <img src="logos/DocLang_Color.svg" alt="">
       </div>
     </div>
-    <div class="hero-visual">
-      <img class="hero-brand-logo" src="logos/doclang-logo.png" alt="DocLang logo">
+  </div>
+</section>
+
+
+<!-- PROOF BAR -->
+<div class="proof" role="complementary" aria-label="Founding organizations">
+  <div class="container">
+    <div class="proof-inner">
+      <span class="proof-label">Founded by</span>
+      <div class="proof-divider" aria-hidden="true"></div>
+      <div class="proof-logos">
+
+        <!-- Linux Foundation -->
+        <figure class="proof-logo proof-logo--lf" title="Linux Foundation">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Linux Foundation" role="img">
+            <path d="M4.8 19.2h9.6V24H0V9.6h4.8v9.6zM0 0v7.2h4.8V4.822h14.4V19.2h-2.4V24H24V0H0z"/>
+          </svg>
+        </figure>
+
+        <!-- IBM -->
+        <figure class="proof-logo proof-logo--ibm" title="IBM">
+          <svg viewBox="0 0 1075 401.15" xmlns="http://www.w3.org/2000/svg" aria-label="IBM" role="img">
+            <g>
+              <g><rect y="373.17" width="194.43" height="27.932"/><rect y="319.83" width="194.43" height="27.932"/><rect x="55.468" y="266.54" width="83.399" height="27.932"/><rect x="55.468" y="213.25" width="83.399" height="27.932"/><rect x="55.468" y="159.96" width="83.399" height="27.932"/><rect x="55.468" y="106.58" width="83.399" height="27.932"/><rect y="53.288" width="194.43" height="27.932"/><rect width="194.43" height="27.932"/></g>
+              <g><path d="m222.17 400.85 207.11 0.297c27.734 0 52.793-10.697 71.513-27.932h-278.62z"/><path d="m222.17 347.76h299.03c5.051-8.617 8.815-18.027 11.094-27.932h-310.12z"/><rect x="277.73" y="266.54" width="83.3" height="27.932"/><path d="m444.43 266.54v27.932h90.927c0-9.608-1.288-19.017-3.764-27.932z"/><path d="m497.92 213.25h-220.19v27.932h243.46c-6.34-10.698-14.165-20.107-23.277-27.932z"/><path d="m277.73 159.96v27.932h220.19c9.311-7.825 17.135-17.235 23.277-27.932z"/><rect x="277.73" y="106.58" width="83.3" height="27.932"/><path d="m444.43 134.51h87.163c2.476-8.914 3.764-18.324 3.764-27.932h-90.927z"/><path d="m521.2 53.288h-299.03v27.932h310.12c-2.575-9.905-6.339-19.314-11.093-27.932z"/><path d="m429.28 0h-207.11v27.932h278.53c-18.621-17.235-43.878-27.932-71.414-27.932z"/></g>
+              <g><polygon points="555.57 81.22 742.67 81.22 733.06 53.288 555.57 53.288"/><polygon points="555.57 27.932 724.25 27.932 714.64 0 555.57 0"/><polygon points="861.03 401.17 861.03 373.24 1000 373.24 1000 401.17"/><polygon points="861.03 347.76 861.03 319.83 1000 319.83 1000 347.76"/><polygon points="777.73 182.54 769.91 159.96 694.43 159.96 611.03 159.96 611.03 187.89 694.43 187.89 694.43 162.24 703.25 187.89 852.22 187.89 861.03 162.24 861.03 187.89 944.43 187.89 944.43 159.96 861.03 159.96 785.56 159.96"/><polygon points="944.43 106.58 803.98 106.58 794.37 134.51 944.43 134.51"/><polygon points="1000 27.932 1000 0 840.93 0 831.32 27.932"/><polygon points="768.13 373.22 777.73 400.85 787.34 373.22"/><polygon points="749.5 319.83 759.31 347.76 796.16 347.76 806.06 319.83"/><polygon points="730.78 266.54 740.59 294.47 814.88 294.47 824.68 266.54"/><polygon points="721.97 241.18 833.6 241.18 843.11 213.25 712.36 213.25"/><polygon points="611.03 134.51 761.09 134.51 751.49 106.58 611.03 106.58"/><polygon points="1000 53.288 822.4 53.288 812.9 81.22 1000 81.22"/><rect x="555.57" y="373.22" width="138.97" height="27.932"/><rect x="555.57" y="319.83" width="138.97" height="27.932"/><rect x="611.03" y="266.54" width="83.399" height="27.932"/><rect x="611.03" y="213.25" width="83.399" height="27.932"/><rect x="861.03" y="213.25" width="83.399" height="27.932"/><rect x="861.03" y="266.54" width="83.399" height="27.932"/></g>
+            </g>
+          </svg>
+        </figure>
+
+        <!-- ABBYY -->
+        <figure class="proof-logo proof-logo--abbyy" title="ABBYY">
+          <svg viewBox="0 0 1429.59 430.1" xmlns="http://www.w3.org/2000/svg" aria-label="ABBYY" role="img">
+            <path d="M1340.28,0l-30.3,138.76c-4.78,21.27-7.97,41.47-12.23,70.71h-2.66c-4.25-29.24-7.44-49.44-12.23-70.71L1252.56,0h-95.16l91.44,300.91V430.1h89.32V300.91L1429.59,0H1340.28z"/>
+            <path d="M1032.45,138.76c-4.78,21.27-7.97,41.47-12.23,70.71h-2.66c-4.25-29.24-7.44-49.44-12.23-70.71L975.04,0h-95.16l91.44,300.91V430.1h89.32V300.91L1152.07,0h-89.32L1032.45,138.76z"/>
+            <path d="M207.34,0H88.25L0,430.1h90.38l15.14-97.29h80.83l15.14,97.29h94.1L207.34,0z M116.44,262.63l20.19-129.72c3.19-20.2,5.32-39.87,7.97-67.52h2.66c2.66,27.65,4.78,47.32,7.97,67.52l20.19,129.72H116.44z"/>
+            <path d="M517.82,201.49v-0.53c30.84-10.63,52.63-42.53,52.63-88.25C570.45,43.59,531.11,0,447.11,0H327.49v430.1h127.06c86.13,0,125.47-46.78,125.47-124.4C580.02,246.15,555.57,214.78,517.82,201.49z M414.68,62.2h24.46c28.71,0,43.06,16.48,43.06,58.48s-14.35,58.48-43.06,58.48h-24.46V62.2z M446.58,367.9h-31.9V239.24h31.9c29.24,0,42.53,18.61,42.53,64.33C489.11,349.29,475.82,367.9,446.58,367.9z"/>
+            <path d="M814.48,201.49v-0.53c30.84-10.63,52.63-42.53,52.63-88.25C867.11,43.59,827.77,0,743.77,0H624.15v430.1h127.06c86.13,0,125.47-46.78,125.47-124.4C876.68,246.15,852.23,214.78,814.48,201.49z M711.34,62.2h24.46c28.71,0,43.06,16.48,43.06,58.48s-14.35,58.48-43.06,58.48h-24.46V62.2z M743.24,367.9h-31.9V239.24h31.9c29.24,0,42.53,18.61,42.53,64.33C785.77,349.29,772.48,367.9,743.24,367.9z"/>
+          </svg>
+        </figure>
+
+        <!-- Red Hat -->
+        <figure class="proof-logo proof-logo--redhat" title="Red Hat">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Red Hat" role="img">
+            <path d="M16.009 13.386c1.577 0 3.86-.326 3.86-2.202a1.765 1.765 0 0 0-.04-.431l-.94-4.08c-.216-.898-.406-1.305-1.982-2.093-1.223-.625-3.888-1.658-4.676-1.658-.733 0-.947.946-1.822.946-.842 0-1.467-.706-2.255-.706-.757 0-1.25.515-1.63 1.576 0 0-1.06 2.99-1.197 3.424a.81.81 0 0 0-.028.245c0 1.162 4.577 4.974 10.71 4.974m4.101-1.435c.218 1.032.218 1.14.218 1.277 0 1.765-1.984 2.745-4.593 2.745-5.895.004-11.06-3.451-11.06-5.734a2.326 2.326 0 0 1 .19-.925C2.746 9.415 0 9.794 0 12.217c0 3.969 9.405 8.861 16.851 8.861 5.71 0 7.149-2.582 7.149-4.62 0-1.605-1.387-3.425-3.887-4.512"/>
+          </svg>
+        </figure>
+
+        <!-- HumanSignal -->
+        <figure class="proof-logo proof-logo--hs" title="HumanSignal">
+          <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-label="HumanSignal" role="img">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.4444 8.42013H0V0H8.4444V8.42013ZM30.025 8.42017H21.5806V0H30.025V8.42017ZM0 30H8.4444V21.5183H0V30ZM30.025 30H21.5806V21.5183H30.025V30ZM2.81439 8.42028H5.62919V21.5183H2.81439V8.42028ZM27.2099 8.42028H24.3951V21.5183H27.2099V8.42028ZM8.44461 2.80693H21.5803V5.61364H8.44461V2.80693ZM21.5803 24.3246H8.44461V27.1313H21.5803V24.3246Z" fill="currentColor"/>
+          </svg>
+        </figure>
+
+        <!-- NVIDIA -->
+        <figure class="proof-logo proof-logo--nvidia" title="NVIDIA">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="NVIDIA" role="img">
+            <path d="M8.948 8.798v-1.43a6.7 6.7 0 0 1 .424-.018c3.922-.124 6.493 3.374 6.493 3.374s-2.774 3.851-5.75 3.851c-.398 0-.787-.062-1.158-.185v-4.346c1.528.185 1.837.857 2.747 2.385l2.04-1.714s-1.492-1.952-4-1.952a6.016 6.016 0 0 0-.796.035m0-4.735v2.138l.424-.027c5.45-.185 9.01 4.47 9.01 4.47s-4.08 4.964-8.33 4.964c-.37 0-.733-.035-1.095-.097v1.325c.3.035.61.062.91.062 3.957 0 6.82-2.023 9.593-4.408.459.371 2.34 1.263 2.73 1.652-2.633 2.208-8.772 3.984-12.253 3.984-.335 0-.653-.018-.971-.053v1.864H24V4.063zm0 10.326v1.131c-3.657-.654-4.673-4.46-4.673-4.46s1.758-1.944 4.673-2.262v1.237H8.94c-1.528-.186-2.73 1.245-2.73 1.245s.68 2.412 2.739 3.11M2.456 10.9s2.164-3.197 6.5-3.533V6.201C4.153 6.59 0 10.653 0 10.653s2.35 6.802 8.948 7.42v-1.237c-4.84-.6-6.492-5.936-6.492-5.936z"/>
+          </svg>
+        </figure>
+        
+      </div>
     </div>
   </div>
 </div>
 
 <!-- THE PROBLEM -->
-<section class="problem">
-  <div class="section-inner">
-    <p class="eyebrow">The problem</p>
-    <h2 class="section-title">Your documents are lying<br>to your models.</h2>
-    <p class="body-text">Modern AI pipelines assume clean, structured input. Real-world documents — contracts, invoices, research papers, regulatory filings — are none of those things. Parsers guess at reading order. Tables become flat text. Figures vanish. Metadata is stripped.</p>
-    <p class="body-text" style="margin-top:1rem;">The result: your model's accuracy is bottlenecked by document quality, not model quality. You spend more engineering time wrangling pre-processing than building the product.</p>
+<section class="problem" aria-labelledby="problem-heading">
+  <div class="container">
+    <div class="problem-layout">
+
+      <div class="problem-copy">
+        <h2 id="problem-heading">Your documents are <em>lying</em><br>to your models.</h2>
+        <p class="problem-body">The world's knowledge lives in formats designed for rendering, not understanding. Markdown was built for readers. HTML for browsers. LaTeX for typesetting. PDF for print. None were built for machines.</p>
+        <p class="problem-body">Modern AI pipelines assume clean, structured input. Real-world documents — contracts, invoices, research papers, regulatory filings — are none of those things. Parsers guess at reading order. Tables become flat text. Figures vanish. Metadata is stripped.</p>
+        <p class="problem-body">The result: your model's accuracy is bottlenecked by document quality, not model quality. You spend more engineering time wrangling pre-processing than building the product.</p>
+      </div>
+
+      <!-- Parse failure report -->
+      <div class="parse-report" role="img" aria-label="Example showing four parser failures: reading order, table structure, figure references, and document metadata all fail when parsing a PDF">
+
+        <div class="pr-header">
+          <div class="pr-dots" aria-hidden="true">
+            <span class="pr-dot pr-dot--red"></span>
+            <span class="pr-dot pr-dot--yellow"></span>
+            <span class="pr-dot pr-dot--green"></span>
+          </div>
+          <code class="pr-cmd">parse(<em>"quarterly_report.pdf"</em>)</code>
+        </div>
+
+        <div class="pr-failures">
+
+          <div class="pr-item">
+            <div class="pr-item-head">
+              <span class="pr-x" aria-hidden="true">✕</span>
+              <span class="pr-test">reading_order</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">expected</span>
+              <span class="pr-good">sequential hierarchy</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">received</span>
+              <span class="pr-bad">undefined</span>
+            </div>
+          </div>
+
+          <div class="pr-item">
+            <div class="pr-item-head">
+              <span class="pr-x" aria-hidden="true">✕</span>
+              <span class="pr-test">table_structure</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">expected</span>
+              <span class="pr-good">3×12 grid with merged cells</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">received</span>
+              <span class="pr-bad">flat string (156 chars)</span>
+            </div>
+          </div>
+
+          <div class="pr-item">
+            <div class="pr-item-head">
+              <span class="pr-x" aria-hidden="true">✕</span>
+              <span class="pr-test">figure_references</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">expected</span>
+              <span class="pr-good">8 embedded figures</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">received</span>
+              <span class="pr-bad">0 (omitted)</span>
+            </div>
+          </div>
+
+          <div class="pr-item">
+            <div class="pr-item-head">
+              <span class="pr-x" aria-hidden="true">✕</span>
+              <span class="pr-test">document_metadata</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">expected</span>
+              <span class="pr-good">{ author, created, lang }</span>
+            </div>
+            <div class="pr-row">
+              <span class="pr-key">received</span>
+              <span class="pr-bad">null</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="pr-footer">
+          <span class="pr-count-fail">4 failed</span>
+          <span class="pr-sep">·</span>
+          <span class="pr-count-pass">0 passed</span>
+        </div>
+
+      </div>
+
+    </div>
   </div>
 </section>
 
 <!-- WHAT IS DOCLANG -->
-<section id="what">
-  <div class="section-inner">
-    <p class="eyebrow">What is DocLang</p>
-    <div class="what-grid">
-      <div class="what-left">
-        <h2 class="section-title">A document representation built for how AI actually reads.</h2>
-        <p class="body-text">DocLang defines a structured, machine-readable format for documents of any type. Not a converter. Not an API. A standard — like JSON for data, like HTML for the web — that any tool can implement and any pipeline can consume.</p>
-        <p class="body-text" style="margin-top:1rem;">Every component in a DocLang asset has explicit type, semantic role, and geometric position. A table is a table. A heading is a heading. A footer is a footer. Your model doesn't have to guess. And compliance metadata — PII flags, AI usage permissions, extraction constraints — travels with the document, not alongside it. The asset knows its own rules.</p>
+<section id="what" class="what" aria-labelledby="what-heading">
+  <div class="container">
+    <div class="what-layout">
+      <div>
+        <h2 id="what-heading">A document representation built for how AI actually reads.</h2>
+        <p class="what-body">DocLang defines a structured, machine-readable format for documents of any type. Not a converter. Not an API. A standard — like JSON for data, like HTML for the web — that any tool can implement and any pipeline can consume.</p>
+        <p class="what-body">Every component carries a semantic tag, bounding box coordinates, and reading order — natively encoded in a format LLM tokenizers can parse without translation overhead. A table encodes its full grid structure via OTSL. A heading carries its level and page position. Your model doesn't have to guess. Governance metadata — PII flags, RAG permissions, training constraints — lives inside <code style="font-family:inherit;font-size:0.9em;color:var(--color-accent-deep)">&lt;head&gt;</code>, not in a sidecar file.</p>
+        <p class="what-body">The same standard extends beyond text documents. Audio transcripts, images, and video segments encode as first-class elements — speakers, timestamps, and scenes using the same primitives as headings and tables.</p>
       </div>
-      <div class="what-right">
-        <h3>What DocLang does</h3>
-        <ul class="what-bullets">
-          <li><span class="bullet-dot"></span>Preserves reading order and document hierarchy</li>
-          <li><span class="bullet-dot"></span>Preserves table structure — rows, columns, merged cells</li>
-          <li><span class="bullet-dot"></span>Maps figure and caption relationships</li>
-          <li><span class="bullet-dot"></span>Embeds inline metadata and governance annotations</li>
-          <li><span class="bullet-dot"></span>Handles multi-column layouts and complex page geometry</li>
-        </ul>
+      <div>
+        <div class="compare-stack">
+
+          <div class="compare-card compare-card--before">
+            <div class="compare-card-header">
+              <span class="compare-card-dot" aria-hidden="true"></span>
+              What your parser returns
+            </div>
+            <div class="compare-card-body">Q3 2024Financial Re<br>port Net Revenue42<br>M51M39M Figure3.2<br>omitted author:null</div>
+          </div>
+
+          <div class="compare-card compare-card--after">
+            <div class="compare-card-header">
+              <span class="compare-card-dot" aria-hidden="true"></span>
+              What DocLang returns
+            </div>
+            <div class="compare-card-body"><span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-tag">&lt;/heading&gt;</span><br><span class="tok-tag">&lt;otsl&gt;</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;nl/&gt;</span><span class="tok-tag">&lt;/otsl&gt;</span><br><span class="tok-tag">&lt;picture&gt;</span><span class="tok-tag">&lt;uri&gt;</span><span class="tok-content">fig-3.2.png</span><span class="tok-tag">&lt;/uri&gt;</span><span class="tok-tag">&lt;/picture&gt;</span><br><span class="tok-tag">&lt;meta&gt;</span><span class="tok-tag">&lt;author&gt;</span><span class="tok-content">J. Smith</span><span class="tok-tag">&lt;/author&gt;</span><span class="tok-tag">&lt;/meta&gt;</span></div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- WHY DOCLANG -->
-<section id="why" class="why">
-  <div class="section-inner">
-    <p class="eyebrow">Why DocLang</p>
-    <h2 class="section-title">Three things that don't exist anywhere else.</h2>
-    <div class="why-rows">
+<section id="why" class="why" aria-labelledby="why-heading">
+  <div class="container">
+    <div class="why-head">
+      <h2 id="why-heading">Six properties. No compromises.</h2>
+    </div>
+    <div class="features-grid">
 
-      <div class="why-row">
-        <span class="why-num">01</span>
-        <div class="why-content">
-          <h3>Structure you can trust</h3>
-          <p>DocLang maps every component to its semantic role and geometric position. There's no ambiguity about what a piece of content is or where it sits in the document. Your models stop hallucinating structure because the structure is already there.</p>
-          <div class="business-note"><strong>For business teams:</strong> fewer errors in automated document workflows mean fewer manual reviews, lower compliance exposure, and faster time-to-decision.</div>
-        </div>
+      <div class="feature-card">
+        <div class="feature-card-name">AI-native</div>
+        <p class="feature-card-desc">Every element maps directly to LLM tokens. No translation layers, no postprocessing, no structural guesswork.</p>
       </div>
 
-      <div class="why-row">
-        <span class="why-num">02</span>
-        <div class="why-content">
-          <h3>Governance built into the file</h3>
-          <p>Compliance metadata — PII flags, AI usage permissions, extraction constraints — travels with the document, not alongside it. No external policy engine to maintain. No risk of metadata getting stripped in transit.</p>
-          <div class="business-note"><strong>For business teams:</strong> audit-ready by default. Your legal and compliance teams can define rules once, and every downstream system reads them automatically.</div>
-        </div>
+      <div class="feature-card">
+        <div class="feature-card-name">Lossless</div>
+        <p class="feature-card-desc">Tables keep their full grid structure. Figures keep their position. Reading order is preserved, not inferred.</p>
       </div>
 
-      <div class="why-row">
-        <span class="why-num">03</span>
-        <div class="why-content">
-          <h3>An open standard anyone can build on</h3>
-          <p>DocLang Specification has been developed as a Joint Development Foundation Projects standard. DocLang is a is an LF AI & Data project. The spec is public, the working group is open, and any vendor can implement it. For the first time, the industry has a shared language for documents — one that belongs to no single company and that every tool, pipeline, and model can speak.</p>
-          <div class="business-note"><strong>For business teams:</strong> no lock-in, ever. Swap components as the market evolves. Your documents stay portable because the standard is stable.</div>
-        </div>
+      <div class="feature-card">
+        <div class="feature-card-name">Expressive</div>
+        <p class="feature-card-desc">Semantic roles, bounding boxes, document hierarchy — all fully encoded. Your model stops hallucinating structure.</p>
       </div>
 
+      <div class="feature-card">
+        <div class="feature-card-name">Beyond documents</div>
+        <p class="feature-card-desc">Audio transcripts, images, video segments — same format, same primitives. Speakers, timestamps, and scenes are native elements.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-name">Unambiguous</div>
+        <p class="feature-card-desc">One canonical representation per content type. No parser-dependent variance. Every tool produces the same output.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card-name">Open</div>
+        <p class="feature-card-desc">A Joint Development Foundation Projects standard and LF AI &amp; Data project. Public spec, open working group, no lock-in.</p>
+      </div>
+
+    </div>
+
+    <div class="business-notes" aria-labelledby="business-notes-heading">
+      <h3 id="business-notes-heading" class="business-notes-title">For business teams</h3>
+      <div class="business-notes-grid">
+        <div class="business-note-card">
+          <div class="business-note-label">Fewer errors, faster decisions</div>
+          <p>Reliable structure means fewer errors in automated document workflows — fewer manual reviews, lower compliance exposure, and faster time-to-decision.</p>
+        </div>
+        <div class="business-note-card">
+          <div class="business-note-label">Audit-ready by default</div>
+          <p>Compliance metadata travels with the document, not alongside it. Legal and compliance teams define rules once, and every downstream system reads them automatically.</p>
+        </div>
+        <div class="business-note-card">
+          <div class="business-note-label">No lock-in, ever</div>
+          <p>Swap components as the market evolves. Your documents stay portable because the standard is stable and any vendor can implement it.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section id="how">
-  <div class="how-inner">
-    <div class="how-left">
-      <p class="eyebrow">How it works</p>
-      <h2>AI native document format specification</h2>
-      <p>DocLang is an AI-native document format. Each asset represents a structured document where every component — headings, tables, figures, paragraphs — carries explicit semantic role, reading order, geometric position, and embedded governance metadata.</p>
-      <a href="https://github.com/doclang" class="spec-link">
-        Full spec and reference implementation on GitHub →
-      </a>
-    </div>
-    <div class="how-right">
-      <h3>Each DocLang asset encodes</h3>
-      <ul class="what-bullets" style="margin-top:0;">
-        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Component type — heading, table, figure, paragraph</span></li>
-        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Semantic role and document hierarchy</span></li>
-        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Geometric position and reading order</span></li>
-        <li style="border-color:rgba(255,255,255,0.08); padding:0.65rem 0;"><span class="bullet-dot"></span><span style="color:rgba(255,255,255,0.55); font-size:13px;">Embedded governance metadata</span></li>
-      </ul>
+<section id="how" class="how" aria-labelledby="how-heading">
+  <div class="container">
+    <div class="how-layout">
+      <div>
+        <h2 id="how-heading">AI-native document format specification</h2>
+        <p class="how-body">DocLang is a constrained XML format built from the ground up for LLM tokenizers — a 1-to-1 mapping between DocLang tokens and model tokens, with minimal token count. Every component carries semantic role, geometric bounding box, and reading order. Tables use OTSL: 5 structural tokens where HTML needs 28.</p>
+        <a href="https://github.com/doclang-project" class="how-link" rel="noopener">
+          Full spec and reference implementation on GitHub →
+        </a>
+      </div>
+      <div>
+        <div class="code-card">
+          <div class="code-card-header">
+            <span class="code-card-label">DocLang · v1.0.0</span>
+            <span class="code-card-badge">quarterly_report.doclang</span>
+          </div>
+          <pre class="code-body"><code><span class="tok-tag">&lt;doclang</span> <span class="tok-key">version</span>=<span class="tok-str">"1.0.0"</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"50"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"310"</span><span class="tok-self">/&gt;</span>
+    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"450"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"340"</span><span class="tok-self">/&gt;</span>
+    <span class="tok-content">Q3 Financial Summary</span>
+  <span class="tok-tag">&lt;/heading&gt;</span>
+
+  <span class="tok-tag">&lt;otsl&gt;</span>
+    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"50"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"400"</span><span class="tok-self">/&gt;</span>
+    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"450"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"600"</span><span class="tok-self">/&gt;</span>
+    <span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Quarter</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">YoY</span><span class="tok-self">&lt;nl/&gt;</span>
+    <span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">+18%</span><span class="tok-self">&lt;nl/&gt;</span>
+  <span class="tok-tag">&lt;/otsl&gt;</span>
+
+<span class="tok-tag">&lt;/doclang&gt;</span></code></pre>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- CONTRIBUTE -->
-<section class="contribute">
-  <div class="section-inner" style="padding-top:4rem; padding-bottom:4rem;">
-    <p class="eyebrow">How do you contribute?</p>
-    <h2 class="section-title" style="color:var(--charcoal);">Join the working group.</h2>
-    <div class="contribute-placeholder">
-      <p style="font-weight:500; color:var(--charcoal); margin-bottom:6px;">Ready to get involved? <a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification">Sign the CLA to join the Working Group</a> and start making contributions. Check out the <a href="https://lists.doclang.ai/g/main">mailing lists</a>, <a href="https://github.com/doclang-project">GitHub org</a>, and <a href="">meeting calendar</a> for the latest news and discussions. 
+<section class="contribute" aria-labelledby="contribute-heading">
+  <div class="container">
+    <h2 id="contribute-heading">Join the working group.</h2>
+    <p class="contribute-body">The spec, the reference implementation, and the working group processes are all public. The standard improves when more perspectives are in the room.</p>
+    <div class="contribute-card">
+      <p class="contribute-card-lead">Ready to get involved? <a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification" rel="noopener">Sign the CLA to join the Working Group</a> and start contributing.</p>
+      <ul class="contribute-links">
+        <li><a href="https://lists.doclang.ai/g/main" rel="noopener">Mailing list</a><span class="contribute-link-desc">Latest news, discussions, and announcements.</span></li>
+        <li><a href="https://github.com/doclang-project" rel="noopener">GitHub org</a><span class="contribute-link-desc">Spec, reference implementation, and open issues.</span></li>
+        <li><a href="#" rel="noopener">Meeting calendar</a><span class="contribute-link-desc">Working group sessions, open to all contributors.</span></li>
+      </ul>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section id="faq">
-  <div class="section-inner">
-    <p class="eyebrow">FAQ</p>
-    <h2 class="section-title">Honest answers to<br>obvious questions.</h2>
-    <div class="faq-list">
-
-      <div class="faq-item">
-        <h3>Is this just another document parser?</h3>
-        <p>No. Parsers convert documents into some proprietary output format. DocLang is a standard — a shared specification that any parser, any converter, any AI tool can implement. The goal is interoperability, not another tool to integrate.</p>
+<section id="faq" class="faq" aria-labelledby="faq-heading">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-sidebar">
+        <h2 id="faq-heading">Honest answers to obvious questions.</h2>
       </div>
+      <div class="faq-list">
 
-      <div class="faq-item">
-        <h3>What's wrong with just using Docling / FineReader / MyParser instead of DocLang?</h3>
-        <p>Nothing — that's the point. Enable the DocLang output and the structured data they produce stops being tied to your specific pipeline configuration. It becomes consumable by any downstream system that speaks the DocLang standard — your embedder, your LLM, your RAG pipeline, your compliance layer.</p>
-        <p><em>Docling and ABBYY FineReader Engine</em> already natively support the DocLang standard.</p>
+        <div class="faq-item">
+          <h3>Is this just another document parser?</h3>
+          <p>No. Parsers convert documents into some proprietary output format. DocLang is a standard — a shared specification that any parser, any converter, any AI tool can implement. The goal is interoperability, not another tool to integrate.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>What's wrong with just using Docling / FineReader / MyParser instead of DocLang?</h3>
+          <p>Nothing — that's the point. Enable the DocLang output and the structured data they produce stops being tied to your specific pipeline configuration. It becomes consumable by any downstream system that speaks the DocLang standard.</p>
+          <p><em>Docling and ABBYY FineReader Engine</em> already natively support the DocLang standard.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How is this different from what PDF already contains?</h3>
+          <p>PDF is a presentation format. It tells a renderer where to draw pixels. DocLang is a semantic format — it tells a model what content <em>is</em>. A PDF table and a DocLang table are fundamentally different objects.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Who governs the spec?</h3>
+          <p>The DocLang Specification development process is governed by Joint Development Foundation Projects. DocLang is an LF AI &amp; Data project. The DocLang working group — founded by IBM, NVIDIA, Red Hat, and ABBYY — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Can I contribute?</h3>
+          <p>Yes. The spec, the reference implementation, and the working group processes are all public. Join the GitHub discussion, open an issue, or attend a working group session. The standard improves when more perspectives are in the room.</p>
+        </div>
+
       </div>
-
-      <div class="faq-item">
-        <h3>How is this different from what PDF already contains?</h3>
-        <p>PDF is a presentation format. It tells a renderer where to draw pixels. DocLang is a semantic format — it tells a model what content <em>is</em>. A PDF table and a DocLang table are fundamentally different objects.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Who governs the spec?</h3>
-        <p>The DocLang Specification development process is governed by Joint Development Foundation Projects. The DocLang working group — founded by IBM, NVIDIA, Red Hat, and ABBYY — proposes and reviews changes, but the foundation ensures the process remains open and no single vendor controls the roadmap.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Can I contribute?</h3>
-        <p>Yes. The spec, the reference implementation, and the working group processes are all public. Join the GitHub discussion, open an issue, or attend a working group session. The standard improves when more perspectives are in the room.</p>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
-<section class="cta" id="cta">
-  <div class="cta-inner">
-    <p class="eyebrow">Ready to standardize your pipeline?</p>
-    <h2>Your pipeline deserves<br>better input.</h2>
-    <p>DocLang is free, open, and ready to use. Read the spec, run the reference converter on your own documents, and see what your models have been missing.</p>
-    <div class="cta-actions">
-      <a href="#" class="btn-orange">Read the spec</a>
-      <a href="https://github.com/doclang" class="btn-secondary">View on GitHub →</a>
-      <a href="#" class="btn-ghost">Join the working group</a>
+<!-- CLOSING CTA -->
+<section class="cta" id="cta" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-inner">
+      <h2 id="cta-heading">The substrate your pipeline has been missing.</h2>
+      <p class="cta-body">If you build with LLMs and VLMs on real-world content, DocLang is the substrate you've been missing. Free, open, and ready to use — read the spec and see what your models have been working around.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn-accent">Read the spec</a>
+        <a href="https://github.com/doclang-project" class="btn-ghost-light" rel="noopener">View on GitHub →</a>
+        <a href="#" class="btn-ghost-light">Join the working group</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-links">
-    <a href="#">DocLang</a>
-    <a href="#">Spec</a>
-    <a href="#">Docs</a>
-    <a href="https://github.com/doclang">GitHub</a>
-    <a href="#">Working group</a>
-    <a href="#">Linux Foundation</a>
-  </div>
-  <span class="footer-copy">© Contributors to DocLang Specification, a Joint Development Foundation Project · Open standard </span>
+<!-- FOOTER — Ft2 Inline single line -->
+<footer class="footer">
+  <ul class="footer-links">
+    <li><a href="#">DocLang</a></li>
+    <li><a href="#">Spec</a></li>
+    <li><a href="#">Docs</a></li>
+    <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="#">Working group</a></li>
+    <li><a href="#">Linux Foundation</a></li>
+  </ul>
+  <span class="footer-copy">© Contributors to DocLang Specification, a Joint Development Foundation Project · Open standard</span>
 </footer>
 
 </body>
