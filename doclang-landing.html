@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DocLang — The AI Document Standard</title>
+<title>DocLang — The AI Native Document Format</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -360,6 +360,25 @@ h1, h2, h3 {
   opacity: 0.45;
   transition: opacity var(--dur-short) var(--ease-out);
   flex-shrink: 0;
+}
+
+.proof-logo-link {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.proof-logo-link:hover .proof-logo,
+.proof-logo-link:focus-visible .proof-logo {
+  opacity: 0.75;
+}
+
+.proof-logo-link:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 .proof-logo:hover { opacity: 0.75; }
@@ -1264,13 +1283,16 @@ h1, h2, h3 {
       <div class="proof-logos">
 
         <!-- Linux Foundation -->
+        <a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener noreferrer" class="proof-logo-link" aria-label="Linux Foundation">
         <figure class="proof-logo proof-logo--lf" title="Linux Foundation">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Linux Foundation" role="img">
             <path d="M4.8 19.2h9.6V24H0V9.6h4.8v9.6zM0 0v7.2h4.8V4.822h14.4V19.2h-2.4V24H24V0H0z"/>
           </svg>
         </figure>
+        </a>
 
         <!-- IBM -->
+        <a href="https://www.ibm.com/" target="_blank" rel="noopener noreferrer" class="proof-logo-link" aria-label="IBM">
         <figure class="proof-logo proof-logo--ibm" title="IBM">
           <svg viewBox="0 0 1075 401.15" xmlns="http://www.w3.org/2000/svg" aria-label="IBM" role="img">
             <g>
@@ -1280,8 +1302,10 @@ h1, h2, h3 {
             </g>
           </svg>
         </figure>
+        </a>
 
         <!-- ABBYY -->
+        <a href="https://www.abbyy.com/" target="_blank" rel="noopener noreferrer" class="proof-logo-link" aria-label="ABBYY">
         <figure class="proof-logo proof-logo--abbyy" title="ABBYY">
           <svg viewBox="0 0 1429.59 430.1" xmlns="http://www.w3.org/2000/svg" aria-label="ABBYY" role="img">
             <path d="M1340.28,0l-30.3,138.76c-4.78,21.27-7.97,41.47-12.23,70.71h-2.66c-4.25-29.24-7.44-49.44-12.23-70.71L1252.56,0h-95.16l91.44,300.91V430.1h89.32V300.91L1429.59,0H1340.28z"/>
@@ -1291,28 +1315,35 @@ h1, h2, h3 {
             <path d="M814.48,201.49v-0.53c30.84-10.63,52.63-42.53,52.63-88.25C867.11,43.59,827.77,0,743.77,0H624.15v430.1h127.06c86.13,0,125.47-46.78,125.47-124.4C876.68,246.15,852.23,214.78,814.48,201.49z M711.34,62.2h24.46c28.71,0,43.06,16.48,43.06,58.48s-14.35,58.48-43.06,58.48h-24.46V62.2z M743.24,367.9h-31.9V239.24h31.9c29.24,0,42.53,18.61,42.53,64.33C785.77,349.29,772.48,367.9,743.24,367.9z"/>
           </svg>
         </figure>
+        </a>
 
         <!-- Red Hat -->
+        <a href="https://www.redhat.com/" target="_blank" rel="noopener noreferrer" class="proof-logo-link" aria-label="Red Hat">
         <figure class="proof-logo proof-logo--redhat" title="Red Hat">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Red Hat" role="img">
             <path d="M16.009 13.386c1.577 0 3.86-.326 3.86-2.202a1.765 1.765 0 0 0-.04-.431l-.94-4.08c-.216-.898-.406-1.305-1.982-2.093-1.223-.625-3.888-1.658-4.676-1.658-.733 0-.947.946-1.822.946-.842 0-1.467-.706-2.255-.706-.757 0-1.25.515-1.63 1.576 0 0-1.06 2.99-1.197 3.424a.81.81 0 0 0-.028.245c0 1.162 4.577 4.974 10.71 4.974m4.101-1.435c.218 1.032.218 1.14.218 1.277 0 1.765-1.984 2.745-4.593 2.745-5.895.004-11.06-3.451-11.06-5.734a2.326 2.326 0 0 1 .19-.925C2.746 9.415 0 9.794 0 12.217c0 3.969 9.405 8.861 16.851 8.861 5.71 0 7.149-2.582 7.149-4.62 0-1.605-1.387-3.425-3.887-4.512"/>
           </svg>
         </figure>
+        </a>
 
         <!-- HumanSignal -->
+        <a href="https://humansignal.com/" target="_blank" rel="noopener noreferrer" class="proof-logo-link" aria-label="HumanSignal">
         <figure class="proof-logo proof-logo--hs" title="HumanSignal">
           <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-label="HumanSignal" role="img">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M8.4444 8.42013H0V0H8.4444V8.42013ZM30.025 8.42017H21.5806V0H30.025V8.42017ZM0 30H8.4444V21.5183H0V30ZM30.025 30H21.5806V21.5183H30.025V30ZM2.81439 8.42028H5.62919V21.5183H2.81439V8.42028ZM27.2099 8.42028H24.3951V21.5183H27.2099V8.42028ZM8.44461 2.80693H21.5803V5.61364H8.44461V2.80693ZM21.5803 24.3246H8.44461V27.1313H21.5803V24.3246Z" fill="currentColor"/>
           </svg>
         </figure>
+        </a>
 
         <!-- NVIDIA -->
+        <a href="https://www.nvidia.com/" target="_blank" rel="noopener noreferrer" class="proof-logo-link" aria-label="NVIDIA">
         <figure class="proof-logo proof-logo--nvidia" title="NVIDIA">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="NVIDIA" role="img">
             <path d="M8.948 8.798v-1.43a6.7 6.7 0 0 1 .424-.018c3.922-.124 6.493 3.374 6.493 3.374s-2.774 3.851-5.75 3.851c-.398 0-.787-.062-1.158-.185v-4.346c1.528.185 1.837.857 2.747 2.385l2.04-1.714s-1.492-1.952-4-1.952a6.016 6.016 0 0 0-.796.035m0-4.735v2.138l.424-.027c5.45-.185 9.01 4.47 9.01 4.47s-4.08 4.964-8.33 4.964c-.37 0-.733-.035-1.095-.097v1.325c.3.035.61.062.91.062 3.957 0 6.82-2.023 9.593-4.408.459.371 2.34 1.263 2.73 1.652-2.633 2.208-8.772 3.984-12.253 3.984-.335 0-.653-.018-.971-.053v1.864H24V4.063zm0 10.326v1.131c-3.657-.654-4.673-4.46-4.673-4.46s1.758-1.944 4.673-2.262v1.237H8.94c-1.528-.186-2.73 1.245-2.73 1.245s.68 2.412 2.739 3.11M2.456 10.9s2.164-3.197 6.5-3.533V6.201C4.153 6.59 0 10.653 0 10.653s2.35 6.802 8.948 7.42v-1.237c-4.84-.6-6.492-5.936-6.492-5.936z"/>
           </svg>
         </figure>
-        
+        </a>
+
       </div>
     </div>
   </div>
