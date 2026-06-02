@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DocLang — The AI Native Document Format</title>
+<title>DocLang</title>
+<link rel="icon" href="logos/doclang_v3_sail.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -554,7 +555,7 @@ h1, h2, h3 {
 
 .what-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
   gap: var(--space-3xl);
   align-items: stretch;
 }
@@ -953,12 +954,19 @@ h1, h2, h3 {
   letter-spacing: 0.01em;
 }
 
+.compare-code-line {
+  display: block;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
 /* Brighter token colors inside the compare-after card for stronger contrast on dark green */
 .compare-card--after .tok-tag     { color: oklch(80% 0.16 288); }
 .compare-card--after .tok-self    { color: oklch(76% 0.14 286); }
 .compare-card--after .tok-key     { color: oklch(78% 0.13 240); }
 .compare-card--after .tok-str     { color: oklch(84% 0.15 188); }
 .compare-card--after .tok-content { color: oklch(96% 0.02 260); }
+.compare-card--after .tok-punct   { color: oklch(72% 0.04 260); }
 
 /* ── WHY ICONS ───────────────────────────────────────────────────────── */
 .why-icon {
@@ -1321,12 +1329,12 @@ h1, h2, h3 {
 <!-- NAV — N5 condensed -->
 <nav class="nav" aria-label="Main navigation">
   <a href="#" class="nav-logo" aria-label="DocLang home">
-    <img class="nav-logomark" src="logos/DocLang_Color.svg" alt="DocLang">
+    <img class="nav-logomark" src="logos/doclang_v3_sail.svg" alt="DocLang"/>
+    &nbsp;&nbsp;DocLang
   </a>
   <ul class="nav-links">
-    <li><a href="#what">Standard</a></li>
-    <li><a href="#how">Docs</a></li>
     <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
+    <li><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
     <li><a href="#cta" class="nav-cta">Get started</a></li>
   </ul>
 </nav>
@@ -1340,15 +1348,15 @@ h1, h2, h3 {
           <span class="hero-kicker-rule" aria-hidden="true"></span>
           Open standard · Joint Development Foundation Project
         </div>
-        <h1 id="hero-heading">The AI native<br>document <em>format.</em></h1>
+        <h1 id="hero-heading">The AI-native<br>document <em>format.</em></h1>
         <p class="hero-sub">PDF was built for print. DOCX was built for editors. DocLang is built for what comes next — a machine-readable document standard your models can actually trust.</p>
         <div class="hero-actions">
-          <a href="#" class="btn-primary">Read the spec</a>
+          <a href="https://github.com/doclang-project/doclang/" class="btn-primary">Read the spec</a>
           <a href="https://github.com/doclang-project" class="btn-secondary" rel="noopener">View on GitHub →</a>
         </div>
       </div>
       <div class="hero-logo" aria-hidden="true">
-        <img src="logos/DocLang_Color.svg" alt="">
+        <img src="logos/doclang_v3_light_background.svg" alt="">
       </div>
     </div>
   </div>
@@ -1556,7 +1564,12 @@ h1, h2, h3 {
               <span class="compare-card-dot" aria-hidden="true"></span>
               What DocLang returns
             </div>
-            <div class="compare-card-body"><span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-tag">&lt;/heading&gt;</span><br><span class="tok-tag">&lt;table&gt;</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;nl/&gt;</span><span class="tok-tag">&lt;/table&gt;</span><br><span class="tok-tag">&lt;picture&gt;</span><span class="tok-tag">&lt;uri&gt;</span><span class="tok-content">fig-3.2.png</span><span class="tok-tag">&lt;/uri&gt;</span><span class="tok-tag">&lt;/picture&gt;</span><br><span class="tok-tag">&lt;meta&gt;</span><span class="tok-tag">&lt;author&gt;</span><span class="tok-content">J. Smith</span><span class="tok-tag">&lt;/author&gt;</span><span class="tok-tag">&lt;/meta&gt;</span></div>
+            <div class="compare-card-body">
+              <span class="compare-code-line"><span class="tok-tag">&lt;head&gt;</span><span class="tok-tag">&lt;author&gt;</span><span class="tok-content">J. Smith</span><span class="tok-tag">&lt;/author&gt;</span><span class="tok-tag">&lt;/head&gt;</span></span>
+              <span class="compare-code-line"><span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span><span class="tok-punct">=</span><span class="tok-str">"1"</span><span class="tok-tag">&gt;</span><span class="tok-content">Q3 2024</span><span class="tok-tag">&lt;/heading&gt;</span></span>
+              <span class="compare-code-line"><span class="tok-tag">&lt;table&gt;</span><span class="tok-self">&lt;ched/&gt;</span><span class="tok-content">Revenue</span><span class="tok-self">&lt;fcel/&gt;</span><span class="tok-content">$42M</span><span class="tok-self">&lt;nl/&gt;</span><span class="tok-tag">&lt;/table&gt;</span></span>
+              <span class="compare-code-line"><span class="tok-tag">&lt;picture&gt;</span><span class="tok-tag">&lt;src</span> <span class="tok-key">uri</span><span class="tok-punct">=</span><span class="tok-str">"fig-3.2.png"</span><span class="tok-tag">/&gt;</span><span class="tok-tag">&lt;/picture&gt;</span></span>
+            </div>
           </div>
 
         </div>
@@ -1618,7 +1631,7 @@ h1, h2, h3 {
         </div>
         <div class="business-note-card">
           <div class="business-note-label">No lock-in, ever</div>
-          <p>Swap components as the market evolves. Your documents stay portable because the standard is stable and any vendor can implement it.</p>
+          <p>Swap components as the market evolves. Your documents stay portable because the speicification is standardized and any vendor can implement it.</p>
         </div>
       </div>
     </div>
@@ -1644,9 +1657,9 @@ h1, h2, h3 {
           </div>
           <pre class="code-body"><code><span class="tok-tag">&lt;doclang</span><span class="tok-tag">&gt;</span>
 
-  <span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span>=<span class="tok-str">"1"</span><span class="tok-tag">&gt;</span>
-    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"50"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"310"</span><span class="tok-self">/&gt;</span>
-    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"450"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span>=<span class="tok-str">"340"</span><span class="tok-self">/&gt;</span>
+  <span class="tok-tag">&lt;heading</span> <span class="tok-key">level</span><span class="tok-punct">=</span><span class="tok-str">"1"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span><span class="tok-punct">=</span><span class="tok-str">"50"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span><span class="tok-punct">=</span><span class="tok-str">"310"</span><span class="tok-self">/&gt;</span>
+    <span class="tok-self">&lt;location</span> <span class="tok-key">value</span><span class="tok-punct">=</span><span class="tok-str">"450"</span><span class="tok-self">/&gt;</span><span class="tok-self">&lt;location</span> <span class="tok-key">value</span><span class="tok-punct">=</span><span class="tok-str">"340"</span><span class="tok-self">/&gt;</span>
     <span class="tok-content">Q3 Financial Summary</span>
   <span class="tok-tag">&lt;/heading&gt;</span>
 
@@ -1737,7 +1750,7 @@ h1, h2, h3 {
       <h2 id="cta-heading">The substrate your pipeline has been missing.</h2>
       <p class="cta-body">If you build with LLMs and VLMs on real-world content, DocLang is the substrate you've been missing. Free, open, and ready to use — read the spec and see what your models have been working around.</p>
       <div class="cta-actions">
-        <a href="#" class="btn-accent">Read the spec</a>
+        <a href="https://github.com/doclang-project/doclang/" class="btn-accent">Read the spec</a>
         <a href="https://github.com/doclang-project" class="btn-ghost-light" rel="noopener">View on GitHub →</a>
         <a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification" class="btn-ghost-light">Join the working group</a>
       </div>
@@ -1749,11 +1762,10 @@ h1, h2, h3 {
 <footer class="footer">
   <ul class="footer-links">
     <li><a href="#">DocLang</a></li>
-    <li><a href="#">Spec</a></li>
-    <li><a href="#">Docs</a></li>
     <li><a href="https://github.com/doclang-project" rel="noopener">GitHub</a></li>
-    <li><a href="#">Working group</a></li>
-    <li><a href="#">Linux Foundation</a></li>
+    <li><a href="https://github.com/doclang-project/doclang/">Specification</a></li>
+    <li><a href="https://enrollment.lfx.linuxfoundation.org?project=doclang-specification">Working group</a></li>
+    <li><a href="https://www.linuxfoundation.org/">Linux Foundation</a></li>
   </ul>
   <span class="footer-copy">© Contributors to DocLang Specification, a Joint Development Foundation Project · Open standard</span>
 </footer>
