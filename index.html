@@ -694,12 +694,20 @@ h1, h2, h3 {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-accent-deep);
+  margin-bottom: var(--space-md);
+}
+
+.business-notes-intro {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.6;
+  max-width: 60ch;
   margin-bottom: var(--space-lg);
 }
 
 .business-notes-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-md);
 }
 
@@ -1262,7 +1270,10 @@ h1, h2, h3 {
   }
 
   .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .business-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .business-notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-lg);
+  }
 
   .hero-inner,
   .problem-layout,
@@ -1620,7 +1631,12 @@ h1, h2, h3 {
 
     <div class="business-notes" aria-labelledby="business-notes-heading">
       <h3 id="business-notes-heading" class="business-notes-title">For business teams</h3>
+      <p class="business-notes-intro">AI is only as reliable as the context it receives. DocLang transforms documents into structured business context that can be trusted across AI agents, workflows, and enterprise systems.</p>
       <div class="business-notes-grid">
+        <div class="business-note-card">
+          <div class="business-note-label">Business context, preserved</div>
+          <p>Structure alone is not enough. DocLang preserves the meaning, relationships, and business context behind your documents so AI systems can act on knowledge, not just content.</p>
+        </div>
         <div class="business-note-card">
           <div class="business-note-label">Fewer errors, faster decisions</div>
           <p>Reliable structure means fewer errors in automated document workflows — fewer manual reviews, lower compliance exposure, and faster time-to-decision.</p>
