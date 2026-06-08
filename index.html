@@ -681,25 +681,35 @@ h1, h2, h3 {
   line-height: 1.65;
 }
 
-/* ── BUSINESS NOTES (For business teams) ─────────────────────────────── */
-.business-notes {
-  margin-top: var(--space-2xl);
-  padding-top: var(--space-xl);
-  border-top: 1px solid var(--color-rule);
+/* ── BUSINESS (For business teams) ────────────────────────────────────── */
+.business {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  border-bottom: 1px solid var(--color-rule);
 }
 
-.business-notes-title {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent-deep);
+.business h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-lg);
+  max-width: 22ch;
+}
+
+.business-notes-intro {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.6;
+  max-width: 60ch;
   margin-bottom: var(--space-lg);
 }
 
 .business-notes-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-md);
 }
 
@@ -1262,7 +1272,10 @@ h1, h2, h3 {
   }
 
   .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .business-notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .business-notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-lg);
+  }
 
   .hero-inner,
   .problem-layout,
@@ -1617,22 +1630,30 @@ h1, h2, h3 {
       </div>
 
     </div>
+  </div>
+</section>
 
-    <div class="business-notes" aria-labelledby="business-notes-heading">
-      <h3 id="business-notes-heading" class="business-notes-title">For business teams</h3>
-      <div class="business-notes-grid">
-        <div class="business-note-card">
-          <div class="business-note-label">Fewer errors, faster decisions</div>
-          <p>Reliable structure means fewer errors in automated document workflows — fewer manual reviews, lower compliance exposure, and faster time-to-decision.</p>
-        </div>
-        <div class="business-note-card">
-          <div class="business-note-label">Audit-ready by default</div>
-          <p>Compliance metadata travels with the document, not alongside it. Legal and compliance teams define rules once, and every downstream system reads them automatically.</p>
-        </div>
-        <div class="business-note-card">
-          <div class="business-note-label">No lock-in, ever</div>
-          <p>Swap components as the market evolves. Your documents stay portable because the speicification is standardized and any vendor can implement it.</p>
-        </div>
+<!-- FOR BUSINESS TEAMS -->
+<section id="business" class="business" aria-labelledby="business-heading">
+  <div class="container">
+    <h2 id="business-heading">The business context layer for enterprise AI.</h2>
+    <p class="business-notes-intro">AI is only as reliable as the context it receives. DocLang transforms documents into structured business context that can be trusted across AI agents, workflows, and enterprise systems.</p>
+    <div class="business-notes-grid">
+      <div class="business-note-card">
+        <div class="business-note-label">Business context, preserved</div>
+        <p>Structure alone is not enough. DocLang preserves the meaning, relationships, and business context behind your documents so AI systems can act on knowledge, not just content.</p>
+      </div>
+      <div class="business-note-card">
+        <div class="business-note-label">Fewer errors, faster decisions</div>
+        <p>Reliable structure means fewer errors in automated document workflows — fewer manual reviews, lower compliance exposure, and faster time-to-decision.</p>
+      </div>
+      <div class="business-note-card">
+        <div class="business-note-label">Audit-ready by default</div>
+        <p>Compliance metadata travels with the document, not alongside it. Legal and compliance teams define rules once, and every downstream system reads them automatically.</p>
+      </div>
+      <div class="business-note-card">
+        <div class="business-note-label">No lock-in, ever</div>
+        <p>Swap components as the market evolves. Your documents stay portable because the speicification is standardized and any vendor can implement it.</p>
       </div>
     </div>
   </div>
